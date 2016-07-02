@@ -4,9 +4,7 @@ var loaders = require('./webpack.loaders');
 
 module.exports = {
 	entry: [
-		'webpack-dev-server/client?http://0.0.0.0:8080', // WebpackDevServer host and port
-		'webpack/hot/only-dev-server',
-		'./index.jsx' // Your appʼs entry point
+		'./eltenia.jsx'
 	],
 	devtool: process.env.WEBPACK_DEVTOOL || 'source-map',
 	output: {
@@ -26,6 +24,9 @@ module.exports = {
 			inline: true
 		},
 	plugins: [
-		new webpack.NoErrorsPlugin()
+		new webpack.ProvidePlugin({
+			_: "lodash",
+			"React": "react"
+		})
 	]
 };

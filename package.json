@@ -1,29 +1,12 @@
 {
-  "name": "react-webpack-babel",
-  "version": "0.0.2",
-  "description": "React Webpack Babel Starter Kit",
+  "name": "eltenia",
+  "version": "0.1.1",
+  "description": "Incremental Fantasy Economy Game",
   "main": "''",
   "scripts": {
     "build": "SET NODE_ENV=production & webpack -p --config webpack.production.config.js --progress --profile --colors",
     "dev": "webpack-dev-server --progress --profile --colors --hot"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/alicoding/react-webpack-babel"
-  },
-  "keywords": [
-    "React",
-    "Webpack",
-    "Babel",
-    "Starter",
-    "template"
-  ],
-  "author": "Ali Al Dallal",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/alicoding/react-webpack-babel/issues"
-  },
-  "homepage": "https://github.com/alicoding/react-webpack-babel#readme",
   "dependencies": {
     "bootstrap": "3.3.6",
     "react-bootstrap": "0.29.5",
@@ -32,7 +15,10 @@
     "jsx-loader": "^0.13.2",
     "node-libs-browser": "1.0.0",
     "react": "15.0.1",
-    "react-dom": "15.0.1"
+    "react-dom": "15.0.1",
+    "node-uuid": "1.4.7",
+    "lodash": "4.13.1",
+    "react-router": "2.4.0"
   },
   "devDependencies": {
     "babel-core": "6.7.7",
