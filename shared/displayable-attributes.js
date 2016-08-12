@@ -13,7 +13,18 @@ const DISPLAYABLE_ATTRIBUTES = {
 		'name',
 		'strength',
 		'survivalRate'
+	],
+	farmland: [
+		'weatherDescription',
+		'weatherModifier',
+		'amazingQuality',
+		'greatQuality',
+		'normalQuality',
+		'poorQuality',
+		'terribleQuality',
+		'season',
+		'seasonModifier'
 	]
-}
+};
 
 export { DISPLAYABLE_ATTRIBUTES }

@@ -2,7 +2,7 @@ import { randomInt }  from '../shared/utility';
 import { randomName } from '../shared/random-name';
 
 export default class Person {
-	constructor() {
+	constructor(farmland) {
 		this.intelligence      = randomInt(15,25);
 		this.conscientiousness = randomInt(15,25);
 		this.growthPotential   = randomInt(10,20);
@@ -18,6 +18,9 @@ export default class Person {
 		this.growth            = 0;
 		this.hoursWorked       = 0;
 		this.foodProduced      = 0;
+
+		this.farmland          = farmland;
+		farmland.addFarmer();
 	}
 	update() {
 		// Work
