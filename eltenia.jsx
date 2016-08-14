@@ -1,16 +1,16 @@
 require("./node_modules/bootstrap/dist/css/bootstrap.min.css");
-// import ReactDOM   from 'react-dom';
 import { render } from 'react-dom'
-import Game       from './game.js';
-import PeopleView from './views/people/people-view.jsx';
-import PersonView from './views/people/person-view.jsx';
-import FarmlandView from './views/farmland/farmland-view.jsx';
+import Game       from './backend/models/game.js';
+import PeopleView from 'frontend/views/people/people-view.jsx';
+import PersonView from 'frontend/views/people/person-view.jsx';
+import FarmlandView from 'frontend/views/farmland/farmland-view.jsx';
 import { Router, Route, hashHistory } from 'react-router'
 import { DISPLAYABLE_ATTRIBUTES } from './shared/displayable-attributes'
 import { TICK }  from './shared/constants.js';
 import { Link } from 'react-router'
 
 let game = new Game ();
+let uuid = require('node-uuid');
 
 window.game = game; // for Dev
 
@@ -67,15 +67,20 @@ class PersonWrapper extends React.Component {
 class FarmlandWrapper extends React.Component {
 	constructor(props) {
 		super(props);
+		this.id       = uuid.v4();
 		this.farmland = game.farmland;
-		this.gameKey  = game.subscribe(this);
-		this.state    = { displayableAttributes: _.pick(this.farmland, DISPLAYABLE_ATTRIBUTES.farmland) }
+		this.state    = this.displayableAttributes();
+
+		game.subscribe(this.id, this.update.bind(this));
 	}
 	componentWillUnmount() {
-		game.unsubscribe(this.gameKey);
+		game.unsubscribe(this.id);
+	}
+	displayableAttributes() {
+		return { displayableAttributes: _.pick(this.farmland, DISPLAYABLE_ATTRIBUTES.farmland) };
 	}
 	update() {
-		this.setState({ displayableAttributes: _.pick(this.farmland, DISPLAYABLE_ATTRIBUTES.farmland) });
+		this.setState(this.displayableAttributes());
 	}
 	render() {
 		return <FarmlandView { ...this.state.displayableAttributes } />

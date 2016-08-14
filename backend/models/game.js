@@ -1,14 +1,12 @@
-import Person from './models/person.js';
-import Farmland from './models/farmland';
-import Weather from './models/weather';
-import { round } from './shared/utility';
+import Person from 'person.js';
+import Farmland from 'farmland';
+import Weather from 'weather';
+import { mix }  from '../../shared/mixin-builder';
+import { Subscribable } from '../mixins/subscribable'
 let uuid = require('node-uuid');
-import { DAYS_IN_YEAR, TICK }  from './shared/constants.js';
+import { DAYS_IN_YEAR, TICK }  from '../../shared/constants.js';
 
-export default class Game {
-	static _notifySubscriber(subscriber) {
-		subscriber.update();
-	}
+class Game {
 	constructor() {
 		this.weather  = new Weather();
 		this.farmland = new Farmland(this.weather);
@@ -28,7 +26,7 @@ export default class Game {
 		}, 20)
 	}
 	update() {
-		this.year = round(this.year + 1.0 / DAYS_IN_YEAR, 6);
+		this.year = _.round(this.year + 1.0 / DAYS_IN_YEAR, 6);
 
 		_.mapValues(this.people, (person) => { person.update() });
 		this.farmland.update();
@@ -36,12 +34,6 @@ export default class Game {
 		// if (this.year % 0.25 == 0) { this.farmland.nextSeason(); }
 		this._notifySubscribers();
 	}
-	_notifySubscribers() {
-		_.each(this.subscribers, this.constructor._notifySubscriber)
-	}
-	subscribe(object) {
-		this.subscribers.push(object);
-		return "yo";
-	}
 }
 
+export default mix(Game).with(Subscribable)

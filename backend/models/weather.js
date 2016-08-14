@@ -1,7 +1,7 @@
-export default class Weather {
-	static _notifySubscriber(subscriber) {
-		subscriber.updateWeather();
-	}
+import { mix }  from '../shared/mixin-builder';
+import { Subscribable } from '../shared/mixins/subscribable'
+
+class Weather {
 	constructor() {
 		this.WEATHER_OPTIONS   = {
 			0: { description: "Amazing", probability: 0.05 },
@@ -17,13 +17,8 @@ export default class Weather {
 		this.subscribers = [];
 	}
 	change() {
-		_.times(100, () => { console.log("win!") });
 		this._changeWeather();
 		this._notifySubscribers();
-	}
-	subscribe(subscriber) {
-		this.subscribers.push(subscriber);
-		this.constructor._notifySubscriber(subscriber);
 	}
 	_changeWeather() {
 		let roll                  = Math.random();
@@ -31,14 +26,13 @@ export default class Weather {
 
 		for (let i = 0; i < _.size(this.WEATHER_OPTIONS); i++) {
 			cumulativeProbability += this.WEATHER_OPTIONS[i].probability;
-
+	
 			if (roll < cumulativeProbability) {
 				this.description     = this.WEATHER_OPTIONS[i].description;
 				break;
 			}
 		}
 	}
-	_notifySubscribers() {
-		_.each(this.subscribers, this.constructor._notifySubscriber)
-	}
 }
+
+export default mix(Weather).with(Subscribable)

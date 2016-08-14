@@ -1,8 +1,11 @@
 var gaussian = require('gaussian');
+let uuid = require('node-uuid');
 import { DAYS_IN_YEAR }  from '../shared/constants.js'
 
 export default class Farmland {
 	constructor(weather) {
+		this.id                      = uuid.v4();
+
 		this.amazingQuality          = 20;
 		this.greatQuality            = 50;
 		this.normalQuality           = 100;
@@ -26,8 +29,7 @@ export default class Farmland {
 		};
 
 		this.weather            = weather;
-		this.weatherDescription = "Normal";
-		this.weatherModifier    = 1;
+		this.weatherModifier    = 0;
 		this.WEATHER_MODIFIERS  = {
 			"Amazing"      : 2.0,
 			"Great"        : 1.5,
@@ -38,7 +40,8 @@ export default class Farmland {
 			"Locust Swarms": .25,
 			"Deep Freeze"  : .15
 		};
-		this.weather.subscribe(this);
+		this.weather.subscribe(this.id, this.updateWeather.bind(this));
+		this.updateWeather();
 
 		this.seasonID          = 0;
 		this.season            = "Spring";
@@ -56,6 +59,19 @@ export default class Farmland {
 		this.fallow            = 0.3;
 
 		this.modifier = 1;
+	}
+	displayParameters() {
+		return {
+			weatherDescription: this.weather.description,
+			weatherModifier:    this.weatherModifier,
+			amazingQuality:     this.amazingQuality,
+			greatQuality:       this.greatQuality,
+			normalQuality:      this.normalQuality,
+			poorQuality:        this.poorQuality,
+			terribleQuality:    this.terribleQuality,
+			season:             this.season.name,
+			seasonModifier:     this.seasonModifier	
+		}
 	}
 	addFarmer() {
 		this.farmers += 1;
@@ -136,8 +152,7 @@ export default class Farmland {
 		this.acresPerFarmer =  cultivableLand / this.farmers;
 	}
 	updateWeather() {
-		this.weatherDescription = this.weather.description;
-		this.weatherModifier    = this.WEATHER_MODIFIERS[this.weatherDescription];
+		this.weatherModifier    = this.WEATHER_MODIFIERS[this.weather.description];
 	}
 }
 
