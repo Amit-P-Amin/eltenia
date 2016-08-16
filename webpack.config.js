@@ -26,7 +26,9 @@ module.exports = {
 	plugins: [
 		new webpack.ProvidePlugin({
 			_: "lodash",
-			"React": "react"
+			"React": "react",
+			"Router": "react-router",
+			"uuid": "node-uuid"
 		})
 	]
 };

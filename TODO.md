@@ -1,5 +1,9 @@
+
+2. Rename files to be xxx.folder
+3. Create base classes that include scoped modules
+
 1. Season shit
-2. Moved around tons of files
+2. 
 3. Split out utlity functions
 2. Extract out season
 

@@ -1,6 +1,6 @@
 import Table from 'react-bootstrap/lib/Table';
 
-export default class FarmlandView extends React.Component {
+export default class Farmland extends React.Component {
 	render() {
 		return (
 			<Table striped bordered condensed hover>

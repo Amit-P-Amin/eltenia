@@ -1,4 +1,4 @@
-export default class PersonView extends React.Component {
+export default class Person extends React.Component {
 	render() {
 		return (
 			<div>

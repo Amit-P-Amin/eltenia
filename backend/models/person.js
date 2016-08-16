@@ -1,5 +1,5 @@
-import { randomInt }  from '../shared/utility';
-import { randomName } from '../shared/random-name';
+import { randomInt }  from '../helpers/random-int';
+import { randomName } from '../helpers/random-name';
 
 export default class Person {
 	constructor(farmland) {

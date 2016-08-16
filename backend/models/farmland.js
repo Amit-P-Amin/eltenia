@@ -1,6 +1,5 @@
 var gaussian = require('gaussian');
-let uuid = require('node-uuid');
-import { DAYS_IN_YEAR }  from '../shared/constants.js'
+import { shared } from '../../shared/shared'
 
 export default class Farmland {
 	constructor(weather) {
@@ -60,19 +59,6 @@ export default class Farmland {
 
 		this.modifier = 1;
 	}
-	displayParameters() {
-		return {
-			weatherDescription: this.weather.description,
-			weatherModifier:    this.weatherModifier,
-			amazingQuality:     this.amazingQuality,
-			greatQuality:       this.greatQuality,
-			normalQuality:      this.normalQuality,
-			poorQuality:        this.poorQuality,
-			terribleQuality:    this.terribleQuality,
-			season:             this.season.name,
-			seasonModifier:     this.seasonModifier	
-		}
-	}
 	addFarmer() {
 		this.farmers += 1;
 	}
@@ -118,7 +104,7 @@ export default class Farmland {
 			let deviation = config.equilibrium - fallow;
 
 			if (deviation > 0 && this.BEST_TO_WORST_QUALITIES[0] != quality) {
-				let mean          = (deviation * config.changeIfOver) / DAYS_IN_YEAR;
+				let mean          = (deviation * config.changeIfOver) / shared.constants.DAYS_IN_YEAR;
 				let percentChange = gaussian(mean, config.variance).ppf(Math.random());
 				let change        = this[quality + "Quality"] * percentChange;
 				let betterQuality = this.BEST_TO_WORST_QUALITIES[this.BEST_TO_WORST_QUALITIES.indexOf(quality) - 1];
@@ -126,7 +112,7 @@ export default class Farmland {
 				this[quality + "Quality"]       -= change;
 				this[betterQuality + "Quality"] += change;
 			} else if (this.BEST_TO_WORST_QUALITIES[-1] != quality) {
-				let mean          = (deviation * config.changeIfUnder) / DAYS_IN_YEAR;
+				let mean          = (deviation * config.changeIfUnder) / shared.constants.DAYS_IN_YEAR;
 				let percentChange = gaussian(mean, config.variance).ppf(Math.random());
 				let change        = this[quality + "Quality"] * percentChange;
 				let worseQuality  = this.BEST_TO_WORST_QUALITIES[this.BEST_TO_WORST_QUALITIES.indexOf(quality) + 1];
@@ -149,10 +135,10 @@ export default class Farmland {
 		this.modifier = this.soilModifier * this.weatherModifier * this.seasonModifier;
 	}
 	updateAcresPerFarmer(cultivableLand) {
-		this.acresPerFarmer =  cultivableLand / this.farmers;
+		this.acresPerFarmer  =  cultivableLand / this.farmers;
 	}
 	updateWeather() {
-		this.weatherModifier    = this.WEATHER_MODIFIERS[this.weather.description];
+		this.weatherModifier = this.WEATHER_MODIFIERS[this.weather.description()];
 	}
 }
 

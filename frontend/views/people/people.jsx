@@ -1,7 +1,7 @@
 import PeopleRow from './people-row';
 import Table     from 'react-bootstrap/lib/Table';
 
-export default class PeopleView extends React.Component {
+export default class People extends React.Component {
 	constructor(props) {
 		super(props);
 		this.peopleRows = this.peopleRows.bind(this);
@@ -28,7 +28,7 @@ export default class PeopleView extends React.Component {
 	}
 }
 
-PeopleView.propTypes = {
+People.propTypes = {
 	people: React.PropTypes.array
 };
 

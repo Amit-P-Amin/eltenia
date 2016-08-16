@@ -1,10 +1,10 @@
-import Person from 'person.js';
-import Farmland from 'farmland';
-import Weather from 'weather';
-import { mix }  from '../../shared/mixin-builder';
+import Person from './person.js';
+import Farmland from './farmland';
+import Weather from './weather';
+import { mix }  from '../mixins/mixin-builder';
 import { Subscribable } from '../mixins/subscribable'
-let uuid = require('node-uuid');
-import { DAYS_IN_YEAR, TICK }  from '../../shared/constants.js';
+
+import { shared } from '../../shared/shared'
 
 class Game {
 	constructor() {
@@ -17,7 +17,7 @@ class Game {
 		this.run();
 	}
 	run() {
-		setInterval(() => { this.update(); }, TICK);
+		setInterval(() => { this.update(); }, shared.constants.TICK);
 	}
 	runTicks(ticks) {
 		setTimeout(() => {
@@ -26,7 +26,7 @@ class Game {
 		}, 20)
 	}
 	update() {
-		this.year = _.round(this.year + 1.0 / DAYS_IN_YEAR, 6);
+		this.year = _.round(this.year + 1.0 / shared.constants.DAYS_IN_YEAR, 6);
 
 		_.mapValues(this.people, (person) => { person.update() });
 		this.farmland.update();

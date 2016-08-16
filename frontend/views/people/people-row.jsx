@@ -1,10 +1,8 @@
-import { Link } from 'react-router'
-
 export default class PeopleRow extends React.Component {
 	render() {
 		return (
 			<tr>
-				<td><Link to={`/person/${this.props.id}`}>{ this.props.name }</Link></td>
+				<td><Router.Link to={`/person/${this.props.id}`}>{ this.props.name }</Router.Link></td>
 				<td>{ this.props.age          }</td>
 				<td>{ this.props.strength     }</td>
 				<td>{ this.props.farmingSkill }</td>
