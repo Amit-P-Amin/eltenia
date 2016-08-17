@@ -21,7 +21,8 @@
     "node-uuid": "1.4.7",
     "lodash": "4.13.1",
     "react-router": "2.4.0",
-    "gaussian": "1.1.0"
+    "gaussian": "1.1.0",
+    "es6-promise": "3.2.1"
   },
   "devDependencies": {
     "babel-core": "6.7.7",

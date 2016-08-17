@@ -1,15 +1,13 @@
 require("./node_modules/bootstrap/dist/css/bootstrap.min.css");
-import Game         from './backend/models/game.js';
-import People       from './frontend/views/people/people.jsx';
-import readPerson   from './backend/data_access_layer/read/person';
-import PersonWrapper from './frontend/wrappers/person';
-import FarmlandWrapper from './frontend/wrappers/farmland';
+import Game                                 from './backend/models/game.js';
+import People                               from './frontend/views/people/people.jsx';
+import PersonReader                         from './backend/data_access_layer/read/person';
+import routes                               from './frontend/routes';
+import { shared }                           from './shared/shared.js';
+import { Router, Link, hashHistory }        from 'react-router'
+import { render }                           from 'react-dom'
 
 let game = new Game ();
-
-import { shared }  from './shared/shared.js';
-import { Router, Link, Route, hashHistory } from 'react-router'
-import { render } from 'react-dom'
 
 // for Dev
 window.game = game;
@@ -28,7 +26,7 @@ export class Eltenia extends React.Component {
 	}
 	people() {
 		return _.map(this.state.game.people, (person, id) => {
-			let parameters = readPerson(person);
+			let parameters = new PersonReader(person).read();
 			parameters.key = id;
 			parameters.id  = id;
 
@@ -38,7 +36,7 @@ export class Eltenia extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1>{ "sex" }</h1>
+				<h1>{ "Hello" }</h1>
 				<Link to={`/resource/farmland`}>Farmland</Link>
 				<People people={this.state.people}/>
 				{this.props.children}
@@ -47,15 +45,10 @@ export class Eltenia extends React.Component {
 	}
 }
 
+
+
 render((
 	<Router history={hashHistory}>
-		<Route path="/" component={Eltenia}>
-			<Route path="/person/:id" component={PersonWrapper}/>
-			<Route path="/resource/farmland" component={FarmlandWrapper}/>
-		</Route>
-		<Route path="*" component={Eltenia}/>
+		{ routes(Eltenia) }
 	</Router>
 ), document.querySelector("#app"));
-
-
-

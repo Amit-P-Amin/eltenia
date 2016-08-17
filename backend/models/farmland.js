@@ -138,7 +138,7 @@ export default class Farmland {
 		this.acresPerFarmer  =  cultivableLand / this.farmers;
 	}
 	updateWeather() {
-		this.weatherModifier = this.WEATHER_MODIFIERS[this.weather.description()];
+		this.weatherModifier = this.WEATHER_MODIFIERS[this.weather.description];
 	}
 }
 

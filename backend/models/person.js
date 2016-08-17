@@ -24,44 +24,44 @@ export default class Person {
 	}
 	update() {
 		// Work
-		this.updateHoursWorked();
-		this.updateAppetite();
-		this.updateFoodProduced();
-		this.updateFarmingSkill();
+		this._updateHoursWorked();
+		this._updateAppetite();
+		this._updateFoodProduced();
+		this._updateFarmingSkill();
 
 		// Eat
-		this.updateAppetiteFulfilled();
-		this.updateFoodStored();
+		this._updateAppetiteFulfilled();
+		this._updateFoodStored();
 
 		// Age
-		this.updateAge();
-		this.updateHealth();
-		this.updateSurvivalRate();
-		this.updateGrowth();
-		this.updateStrength();
+		this._updateAge();
+		this._updateHealth();
+		this._updateSurvivalRate();
+		this._updateGrowth();
+		this._updateStrength();
 	}
-	updateHoursWorked() {
+	_updateHoursWorked() {
 		this.hoursWorked       = this.health / 100 * this.conscientiousness;
 	}
-	updateAppetite() {
+	_updateAppetite() {
 		this.appetite          = this.strength * .1 * this.hoursWorked;
 	}
-	updateFoodProduced() {
+	_updateFoodProduced() {
 		this.foodProduced      = this.strength * .1 * this.hoursWorked * this.farmingSkill;
 	}
-	updateFarmingSkill() {
+	_updateFarmingSkill() {
 		this.farmingSkill      = this.farmingSkill + this.intelligence / 1000 * this.hoursWorked;
 	}
-	updateAppetiteFulfilled() {
+	_updateAppetiteFulfilled() {
 		this.appetiteFulfilled = Math.min((this.foodStored + this.foodProduced) / this.appetite, 1);
 	}
-	updateFoodStored() {
+	_updateFoodStored() {
 		this.foodStored        = Math.max((this.foodStored + this.foodProduced) - this.appetite, 0);
 	}
-	updateAge() {
+	_updateAge() {
 		this.age               = this.age + .005;
 	}
-	updateHealth() {
+	_updateHealth() {
 		if(this.appetiteFulfilled < 1) {
 			this.health          = this.health - (1 - this.appetiteFulfilled);
 		} else {
@@ -72,13 +72,13 @@ export default class Person {
 			this.health          = this.health - (this.age - 50) / 100;
 		}
 	}
-	updateSurvivalRate() {
+	_updateSurvivalRate() {
 		this.survivalRate      = Math.min(this.health / 20, 1);
 	}
-	updateGrowth() {
+	_updateGrowth() {
 		this.growth            = this.growthPotential / 100 * this.hoursWorked;
 	}
-	updateStrength() {
+	_updateStrength() {
 		this.strength          = this.strength + this.growth;
 	}
 }

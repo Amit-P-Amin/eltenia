@@ -6,7 +6,7 @@ export default class BaseWrapper extends React.Component {
 		game.unsubscribe(this.id);
 	}
 	parameters() {
-		return { parameters: this.read(this.model) };
+		return { parameters: this.reader.read() };
 	}
 	update() {
 		this.setState(this.parameters());

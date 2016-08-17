@@ -1,17 +1,21 @@
-export default (person) => {
-	return {
-		age:               person.age,
-		appetite:          person.appetite,
-		appetiteFulfilled: person.appetiteFulfilled,
-		conscientiousness: person.conscientiousness,
-		farmingSkill:      person.farmingSkill,
-		foodProduced:      person.foodProduced,
-		foodStored:        person.foodStored,
-		growthPotential:   person.growthPotential,
-		health:            person.health,
-		intelligence:      person.intelligence,
-		name:              person.name,
-		strength:          person.strength,
-		survivalRate:      person.survivalRate
+import BaseReader from './base-reader'
+
+export default class Person extends BaseReader {
+	readModel() {
+		return {
+			age:               this.model.age,
+			appetite:          this.model.appetite,
+			appetiteFulfilled: this.model.appetiteFulfilled,
+			conscientiousness: this.model.conscientiousness,
+			farmingSkill:      this.model.farmingSkill,
+			foodProduced:      this.model.foodProduced,
+			foodStored:        this.model.foodStored,
+			growthPotential:   this.model.growthPotential,
+			health:            this.model.health,
+			intelligence:      this.model.intelligence,
+			name:              this.model.name,
+			strength:          this.model.strength,
+			survivalRate:      this.model.survivalRate
+		}
 	}
 }

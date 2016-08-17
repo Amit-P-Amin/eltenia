@@ -1,8 +1,6 @@
 import { mix }  from '../mixins/mixin-builder';
 import { Subscribable } from '../mixins/subscribable'
 
-var description = Symbol("description");
-
 class Weather {
 	constructor() {
 		this.WEATHER_OPTIONS   = {
@@ -15,15 +13,12 @@ class Weather {
 			6: { description: "Locust Swarms", probability: .05 },
 			7: { description: "Deep Freeze", probability: .05 }
 		};
-		this[description] = "Normal";
+		this.description = "Normal";
 		this.subscribers = [];
 	}
 	change() {
 		this._changeWeather();
 		this._notifySubscribers();
-	}
-	description() {
-		return this[description];
 	}
 	_changeWeather() {
 		let roll                  = Math.random();
@@ -33,7 +28,7 @@ class Weather {
 			cumulativeProbability += this.WEATHER_OPTIONS[i].probability;
 
 			if (roll < cumulativeProbability) {
-				this[description]    = this.WEATHER_OPTIONS[i].description;
+				this.description     = this.WEATHER_OPTIONS[i].description;
 				break;
 			}
 		}
