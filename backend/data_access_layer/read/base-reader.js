@@ -8,11 +8,11 @@ export default class BaseReader {
 		let cleaned    = {};
 		let parameters = this.readModel();
 
-		for (var key in parameters) { cleaned[key] = this.clean(parameters[key]) }
+		for (var key in parameters) { cleaned[key] = this._clean(parameters[key]) }
 
 		return cleaned;
 	}
-	clean(value) {
+	_clean(value) {
 		if (isNumeric(value)) {
 			return _.round(value, 2);
 		} else {

@@ -1,15 +1,16 @@
-import Person from './person.js';
-import Farmland from './farmland';
-import Weather from './weather';
-import { mix }  from '../mixins/mixin-builder';
+import Season           from './season';
+import Person           from './person.js';
+import Farmland         from './farmland';
+import Weather          from './weather';
+import { mix }          from '../mixins/mixin-builder';
 import { Subscribable } from '../mixins/subscribable'
-
-import { shared } from '../../shared/shared'
+import { shared }       from '../../shared/shared'
 
 class Game {
 	constructor() {
 		this.weather  = new Weather();
-		this.farmland = new Farmland(this.weather);
+		this.season   = new Season();
+		this.farmland = new Farmland(this.weather, this.season);
 		this.people   = _.tap({}, (people) => { _.times(5, () => { people[uuid.v4()] = new Person(this.farmland) }); });
 		this.year     = 0;
 
@@ -30,8 +31,9 @@ class Game {
 
 		_.mapValues(this.people, (person) => { person.update() });
 		this.farmland.update();
-		if (this.year % 1 == 0)    { this.weather.change();   }
-		// if (this.year % 0.25 == 0) { this.farmland.nextSeason(); }
+		if (this.year % 1 == 0)    { this.weather.change(); }
+		if (this.year % 0.25 == 0) { this.season.change(); }
+
 		this._notifySubscribers();
 	}
 }

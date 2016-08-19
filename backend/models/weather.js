@@ -1,4 +1,4 @@
-import { mix }  from '../mixins/mixin-builder';
+import { mix }          from '../mixins/mixin-builder';
 import { Subscribable } from '../mixins/subscribable'
 
 class Weather {

@@ -45,8 +45,6 @@ export class Eltenia extends React.Component {
 	}
 }
 
-
-
 render((
 	<Router history={hashHistory}>
 		{ routes(Eltenia) }

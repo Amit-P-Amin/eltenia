@@ -1,8 +1,9 @@
 var gaussian = require('gaussian');
-import { shared } from '../../shared/shared'
+import { shared }        from '../../shared/shared';
+import { config } from '../config/config';
 
 export default class Farmland {
-	constructor(weather) {
+	constructor(weather, season) {
 		this.id                      = uuid.v4();
 
 		this.amazingQuality          = 20;
@@ -11,46 +12,16 @@ export default class Farmland {
 		this.poorQuality             = 200;
 		this.terribleQuality         = 500;
 		this.soilModifier            = 1;
-		this.BEST_TO_WORST_QUALITIES = ["amazing", "great", "normal", "poor", "terrible"];
-		this.QUALITY_MODIFIERS       = {
-			amazing:  2.0,
-			great:    1.25,
-			normal:   1.0,
-			poor:     0.75,
-			terrible: 0.5
-		};
-		this.SOIL_CHANGE_CONFIGURATION    = {
-			amazing:  { equilibrium: .60, changeIfOver: .0000, changeIfUnder: -.0100, variance: .020 },
-			great:    { equilibrium: .50, changeIfOver: .0010, changeIfUnder: -.0050, variance: .010 },
-			normal:   { equilibrium: .40, changeIfOver: .0015, changeIfUnder: -.0075, variance: .015 },
-			poor:     { equilibrium: .35, changeIfOver: .0020, changeIfUnder: -.0100, variance: .020 },
-			terrible: { equilibrium: .30, changeIfOver: .0025, changeIfUnder: -.0000, variance: .025 }
-		};
 
 		this.weather            = weather;
 		this.weatherModifier    = 0;
-		this.WEATHER_MODIFIERS  = {
-			"Amazing"      : 2.0,
-			"Great"        : 1.5,
-			"Normal"       : 1,
-			"Poor"         : .7,
-			"Terrible"     : .5,
-			"Drought"      : .3,
-			"Locust Swarms": .25,
-			"Deep Freeze"  : .15
-		};
 		this.weather.subscribe(this.id, this.updateWeather.bind(this));
 		this.updateWeather();
 
-		this.seasonID          = 0;
-		this.season            = "Spring";
-		this.seasonModifier    = 1.5;
-		this.SEASONS           = {
-			0: { name: "Winter", modifier: 0.25 },
-			1: { name: "Spring", modifier: 1.25 },
-			2: { name: "Summer", modifier: 1.0 },
-			3: { name: "Fall", modifier: 0.75 }
-		};
+		this.season           = season;
+		this.seasonModifier   = 0;
+		this.season.subscribe(this.id, this.updateSeason.bind(this));
+		this.updateSeason();
 
 		this.maxAcresPerFarmer = 5;
 		this.acresPerFarmer    = 5;
@@ -65,14 +36,8 @@ export default class Farmland {
 	removeFarmer() {
 		this.farmers -= 1;
 	}
-	changeSeason() {
-		this.seasonID       = (this.seasonID == 3 ? 0 : this.seasonID + 1);
-
-		this.season         = this.SEASONS[this.seasonID].name;
-		this.seasonModifier = this.SEASONS[this.seasonID].modifier;
-	}
 	cultivableLand() {
-		return _.reduce(this.BEST_TO_WORST_QUALITIES, (sum, quality) => {
+		return _.reduce(config.farmland.BEST_TO_WORST_QUALITIES, (sum, quality) => {
 			return sum + this[quality + "Quality"] * this.fallow;
 		}, 0);
 	}
@@ -83,7 +48,7 @@ export default class Farmland {
 
 		if (landNeeded > cultivableLand) {
 			this.updateAcresPerFarmer(cultivableLand);
-			soilUsage = _.zip(Array(this.BEST_TO_WORST_QUALITIES.length).fill(this.fallow), this.BEST_TO_WORST_QUALITIES);
+			soilUsage = _.zip(Array(config.farmland.BEST_TO_WORST_QUALITIES.length).fill(this.fallow), config.farmland.BEST_TO_WORST_QUALITIES);
 		} else {
 			_.map(["amazing", "great", "normal", "poor", "terrible"], (quality) => {
 				let available     = this[quality + "Quality"] * this.fallow;
@@ -100,22 +65,22 @@ export default class Farmland {
 	updateSoil(usage) {
 		_.forEach(usage, ([quality, fallow]) => {
 
-			let config    = this.SOIL_CHANGE_CONFIGURATION[quality];
-			let deviation = config.equilibrium - fallow;
+			let settings    = config.farmland.SOIL_CHANGE_CONFIGURATION[quality];
+			let deviation = settings.equilibrium - fallow;
 
-			if (deviation > 0 && this.BEST_TO_WORST_QUALITIES[0] != quality) {
-				let mean          = (deviation * config.changeIfOver) / shared.constants.DAYS_IN_YEAR;
-				let percentChange = gaussian(mean, config.variance).ppf(Math.random());
+			if (deviation > 0 && config.farmland.BEST_TO_WORST_QUALITIES[0] != quality) {
+				let mean          = (deviation * settings.changeIfOver) / shared.constants.DAYS_IN_YEAR;
+				let percentChange = gaussian(mean, settings.variance).ppf(Math.random());
 				let change        = this[quality + "Quality"] * percentChange;
-				let betterQuality = this.BEST_TO_WORST_QUALITIES[this.BEST_TO_WORST_QUALITIES.indexOf(quality) - 1];
+				let betterQuality = config.farmland.BEST_TO_WORST_QUALITIES[config.farmland.BEST_TO_WORST_QUALITIES.indexOf(quality) - 1];
 
 				this[quality + "Quality"]       -= change;
 				this[betterQuality + "Quality"] += change;
-			} else if (this.BEST_TO_WORST_QUALITIES[-1] != quality) {
-				let mean          = (deviation * config.changeIfUnder) / shared.constants.DAYS_IN_YEAR;
-				let percentChange = gaussian(mean, config.variance).ppf(Math.random());
+			} else if (config.farmland.BEST_TO_WORST_QUALITIES[-1] != quality) {
+				let mean          = (deviation * settings.changeIfUnder) / shared.constants.DAYS_IN_YEAR;
+				let percentChange = gaussian(mean, settings.variance).ppf(Math.random());
 				let change        = this[quality + "Quality"] * percentChange;
-				let worseQuality  = this.BEST_TO_WORST_QUALITIES[this.BEST_TO_WORST_QUALITIES.indexOf(quality) + 1];
+				let worseQuality  = config.farmland.BEST_TO_WORST_QUALITIES[config.farmland.BEST_TO_WORST_QUALITIES.indexOf(quality) + 1];
 
 				this[quality + "Quality"]      -= change;
 				this[worseQuality + "Quality"] += change;
@@ -126,7 +91,7 @@ export default class Farmland {
 		let totalModifier = 0;
 
 		_.forEach(usage, ([quality, fallow]) => {
-			totalModifier += this.QUALITY_MODIFIERS[quality] * this[quality + "Quality"] * (1 - fallow);
+			totalModifier += config.farmland.SOIL_QUALITY_MODIFIERS[quality] * this[quality + "Quality"] * (1 - fallow);
 		});
 
 		this.soilModifier = totalModifier / this.cultivableLand();
@@ -135,10 +100,13 @@ export default class Farmland {
 		this.modifier = this.soilModifier * this.weatherModifier * this.seasonModifier;
 	}
 	updateAcresPerFarmer(cultivableLand) {
-		this.acresPerFarmer  =  cultivableLand / this.farmers;
+		this.acresPerFarmer =  cultivableLand / this.farmers;
+	}
+	updateSeason() {
+		this.seasonModifier = config.farmland.SEASON_MODIFIERS[this.season.name];
 	}
 	updateWeather() {
-		this.weatherModifier = this.WEATHER_MODIFIERS[this.weather.description];
+		this.weatherModifier = config.farmland.WEATHER_MODIFIERS[this.weather.description];
 	}
 }
 
