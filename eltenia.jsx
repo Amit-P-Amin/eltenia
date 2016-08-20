@@ -6,12 +6,14 @@ import routes                               from './frontend/routes';
 import { shared }                           from './shared/shared.js';
 import { Router, Link, hashHistory }        from 'react-router'
 import { render }                           from 'react-dom'
+import { config }                           from './backend/config/config';
 
 let game = new Game ();
 
 // for Dev
 window.game = game;
 window.shared = shared;
+window.config = config;
 //
 
 export class Eltenia extends React.Component {

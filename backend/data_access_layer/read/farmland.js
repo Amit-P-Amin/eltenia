@@ -5,11 +5,11 @@ export default class Farmland extends BaseReader {
 		return {
 			weatherDescription: this.model.weather.description,
 			weatherModifier:    this.model.weatherModifier,
-			amazingQuality:     this.model.amazingQuality,
-			greatQuality:       this.model.greatQuality,
-			normalQuality:      this.model.normalQuality,
-			poorQuality:        this.model.poorQuality,
-			terribleQuality:    this.model.terribleQuality,
+			amazingQuality:     this.model.lands["amazing"].size,
+			greatQuality:       this.model.lands["great"].size,
+			normalQuality:      this.model.lands["normal"].size,
+			poorQuality:        this.model.lands["poor"].size,
+			terribleQuality:    this.model.lands["terrible"].size,
 			season:             this.model.season.name,
 			seasonModifier:     this.model.seasonModifier
 		}

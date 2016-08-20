@@ -1,4 +1,4 @@
-import isNumeric from '../../helpers/isNumeric'
+import isNumeric from '../../helpers/is-numeric'
 
 export default class BaseReader {
 	constructor(model) {

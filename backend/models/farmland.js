@@ -1,20 +1,15 @@
 var gaussian = require('gaussian');
-import { shared }        from '../../shared/shared';
+import { shared } from '../../shared/shared';
 import { config } from '../config/config';
+import { helpers } from '../helpers/helpers';
+import Land       from './land';
 
 export default class Farmland {
 	constructor(weather, season) {
-		this.id                      = uuid.v4();
+		this.id               = uuid.v4();
 
-		this.amazingQuality          = 20;
-		this.greatQuality            = 50;
-		this.normalQuality           = 100;
-		this.poorQuality             = 200;
-		this.terribleQuality         = 500;
-		this.soilModifier            = 1;
-
-		this.weather            = weather;
-		this.weatherModifier    = 0;
+		this.weather          = weather;
+		this.weatherModifier  = 0;
 		this.weather.subscribe(this.id, this.updateWeather.bind(this));
 		this.updateWeather();
 
@@ -26,9 +21,18 @@ export default class Farmland {
 		this.maxAcresPerFarmer = 5;
 		this.acresPerFarmer    = 5;
 		this.farmers           = 0;
-		this.fallow            = 0.3;
+		this.fallowRate        = 0.3;
 
-		this.modifier = 1;
+		this.lands            = {
+			amazing : new Land(this, 20),
+			great   : new Land(this, 50),
+			normal  : new Land(this, 100),
+			poor    : new Land(this, 200),
+			terrible: new Land(this, 500)
+		};
+		this.landModifier     = 1;
+
+		this.totalModifier = 1;
 	}
 	addFarmer() {
 		this.farmers += 1;
@@ -36,68 +40,66 @@ export default class Farmland {
 	removeFarmer() {
 		this.farmers -= 1;
 	}
-	cultivableLand() {
-		return _.reduce(config.farmland.BEST_TO_WORST_QUALITIES, (sum, quality) => {
-			return sum + this[quality + "Quality"] * this.fallow;
+	update() {
+		this.updateLandInUse();
+		this.updateLandSize();
+		this.updateLandModifier();
+		this.updateTotalModifier();
+	}
+	updateLandInUse() {
+		let landNeeded = this.acresPerFarmer * this.farmers;
+
+	  _.map(config.farmland.BEST_TO_WORST_LAND, (quality) => {
+			let land   = this.lands[quality];
+	  	land.used  = Math.min(landNeeded, land.available);
+			landNeeded = Math.max(landNeeded - land.used, 0);
 		}, 0);
 	}
-	update() {
-		let landNeeded     = this.maxAcresPerFarmer * this.farmers;
-		let cultivableLand = this.cultivableLand();
-		let soilUsage = [];
+	updateLandSize() {
+		_.map(config.farmland.BEST_TO_WORST_LAND, (quality) => {
+			let land      = this.lands[quality];
+			let settings  = config.farmland.LAND_CHANGE_SETTINGS[quality];
+			let deviation = settings.equilibrium - land.fallowPercent();
 
-		if (landNeeded > cultivableLand) {
-			this.updateAcresPerFarmer(cultivableLand);
-			soilUsage = _.zip(Array(config.farmland.BEST_TO_WORST_QUALITIES.length).fill(this.fallow), config.farmland.BEST_TO_WORST_QUALITIES);
-		} else {
-			_.map(["amazing", "great", "normal", "poor", "terrible"], (quality) => {
-				let available     = this[quality + "Quality"] * this.fallow;
-				let landUsed      = Math.min(available, landNeeded);
-				landNeeded        -= landUsed;
-				soilUsage.push([quality, 1.0 - landUsed / available]);
-			});
-		}
-
-		this.updateSoil(soilUsage);
-		this.updateSoilModifier(soilUsage);
-		this.updateModifier();
-	}
-	updateSoil(usage) {
-		_.forEach(usage, ([quality, fallow]) => {
-
-			let settings    = config.farmland.SOIL_CHANGE_CONFIGURATION[quality];
-			let deviation = settings.equilibrium - fallow;
-
-			if (deviation > 0 && config.farmland.BEST_TO_WORST_QUALITIES[0] != quality) {
-				let mean          = (deviation * settings.changeIfOver) / shared.constants.DAYS_IN_YEAR;
-				let percentChange = gaussian(mean, settings.variance).ppf(Math.random());
-				let change        = this[quality + "Quality"] * percentChange;
-				let betterQuality = config.farmland.BEST_TO_WORST_QUALITIES[config.farmland.BEST_TO_WORST_QUALITIES.indexOf(quality) - 1];
-
-				this[quality + "Quality"]       -= change;
-				this[betterQuality + "Quality"] += change;
-			} else if (config.farmland.BEST_TO_WORST_QUALITIES[-1] != quality) {
-				let mean          = (deviation * settings.changeIfUnder) / shared.constants.DAYS_IN_YEAR;
-				let percentChange = gaussian(mean, settings.variance).ppf(Math.random());
-				let change        = this[quality + "Quality"] * percentChange;
-				let worseQuality  = config.farmland.BEST_TO_WORST_QUALITIES[config.farmland.BEST_TO_WORST_QUALITIES.indexOf(quality) + 1];
-
-				this[quality + "Quality"]      -= change;
-				this[worseQuality + "Quality"] += change;
+			if (deviation > 0 && config.farmland.BEST_TO_WORST_LAND[0] != quality) {
+				this.upgradeLand(land, quality, settings);
+			} else if (_.last(config.farmland.BEST_TO_WORST_LAND) != quality) {
+				this.downgradeLand(land, quality, settings);
 			}
 		})
 	}
-	updateSoilModifier(usage) {
-		let totalModifier = 0;
+	upgradeLand(land, quality, settings) {
+		let meanChange    = settings.changeIfOver / shared.constants.DAYS_IN_YEAR;
+		let percentChange = Math.max(gaussian(meanChange, settings.variance).ppf(Math.random()), 0);
+		let fallowLand    = land.size - land.used;
+		let change        = fallowLand * percentChange;
+		let betterQuality = config.farmland.BEST_TO_WORST_LAND[config.farmland.BEST_TO_WORST_LAND.indexOf(quality) - 1];
 
-		_.forEach(usage, ([quality, fallow]) => {
-			totalModifier += config.farmland.SOIL_QUALITY_MODIFIERS[quality] * this[quality + "Quality"] * (1 - fallow);
+		land.remove(change);
+		this.lands[betterQuality].add(change);
+	}
+	downgradeLand(land, quality, settings) {
+		let meanChange    = settings.changeIfUnder / shared.constants.DAYS_IN_YEAR;
+		let percentChange = Math.max(gaussian(meanChange, settings.variance).ppf(Math.random()), 0);
+		let change        = land.used * percentChange;
+		let worseQuality  = config.farmland.BEST_TO_WORST_LAND[config.farmland.BEST_TO_WORST_LAND.indexOf(quality) + 1];
+
+		land.remove(change);
+		this.lands[worseQuality].add(change);
+	}
+	updateLandModifier() {
+		let modifiers = [];
+		let weights   = [];
+
+		_.map(config.farmland.BEST_TO_WORST_LAND, (quality) => {
+			modifiers.push(config.farmland.LAND_QUALITY_MODIFIERS[quality]);
+			weights.push(this.lands[quality].used);
 		});
 
-		this.soilModifier = totalModifier / this.cultivableLand();
+		return helpers.weightedAverage(modifiers, weights);
 	}
-	updateModifier() {
-		this.modifier = this.soilModifier * this.weatherModifier * this.seasonModifier;
+	updateTotalModifier() {
+		this.totalModifier = this.landModifier * this.weatherModifier * this.seasonModifier;
 	}
 	updateAcresPerFarmer(cultivableLand) {
 		this.acresPerFarmer =  cultivableLand / this.farmers;
