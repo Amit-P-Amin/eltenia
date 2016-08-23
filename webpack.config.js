@@ -29,7 +29,8 @@ module.exports = {
 			_: "lodash",
 			"React": "react",
 			"Router": "react-router",
-			"uuid": "node-uuid"
+			"uuid": "node-uuid",
+			"Bootstrap": "react-bootstrap"
 		})
 	]
 };

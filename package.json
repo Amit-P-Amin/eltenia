@@ -1,6 +1,6 @@
 {
   "name": "eltenia",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Incremental Fantasy Economy Game",
   "main": "''",
   "scripts": {
@@ -22,7 +22,9 @@
     "lodash": "4.13.1",
     "react-router": "2.4.0",
     "gaussian": "1.1.0",
-    "es6-promise": "3.2.1"
+    "es6-promise": "3.2.1",
+    "store": "1.3.20",
+    "localStorage": "1.0.3"
   },
   "devDependencies": {
     "babel-core": "6.7.7",

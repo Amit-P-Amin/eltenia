@@ -2,7 +2,7 @@ import { mix }          from '../mixins/mixin-builder';
 import { Subscribable } from '../mixins/subscribable'
 
 class Weather {
-	constructor() {
+	constructor(params) {
 		this.WEATHER_OPTIONS   = {
 			0: { description: "Amazing", probability: 0.05 },
 			1: { description: "Great", probability: 0.15 },
@@ -13,7 +13,7 @@ class Weather {
 			6: { description: "Locust Swarms", probability: .05 },
 			7: { description: "Deep Freeze", probability: .05 }
 		};
-		this.description = "Normal";
+		this.description = params.description;
 		this.subscribers = [];
 	}
 	change() {

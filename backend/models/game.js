@@ -7,9 +7,9 @@ import { Subscribable } from '../mixins/subscribable'
 import { shared }       from '../../shared/shared'
 
 class Game {
-	constructor() {
-		this.weather  = new Weather();
-		this.season   = new Season();
+	constructor(starting) {
+		this.weather  = new Weather(starting.weather);
+		this.season   = new Season(starting.season);
 		this.farmland = new Farmland(this.weather, this.season);
 		this.people   = _.tap({}, (people) => { _.times(5, () => { people[uuid.v4()] = new Person(this.farmland) }); });
 		this.year     = 0;
@@ -18,15 +18,15 @@ class Game {
 		this.run();
 	}
 	run() {
-		setInterval(() => { this.update(); }, shared.constants.TICK);
+		setInterval(() => { this._update(); }, shared.constants.TICK);
 	}
 	runTicks(ticks) {
 		setTimeout(() => {
-			this.update();
+			this._update();
 			if (ticks > 1) { this.runTicks(ticks - 1); }
 		}, 20)
 	}
-	update() {
+	_update() {
 		this.year = _.round(this.year + 1.0 / shared.constants.DAYS_IN_YEAR, 6);
 
 		_.mapValues(this.people, (person) => { person.update() });

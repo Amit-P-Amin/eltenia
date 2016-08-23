@@ -2,9 +2,9 @@ import { mix }          from '../mixins/mixin-builder';
 import { Subscribable } from '../mixins/subscribable'
 
 class Season {
-	constructor() {
+	constructor(params) {
 		this.SEASONS     = ["Winter", "Spring", "Summer", "Fall"];
-		this.name        = this.SEASONS[1];
+		this.name        = params.name;
 		this.subscribers = [];
 	}
 	change() {
