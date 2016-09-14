@@ -27,10 +27,11 @@ module.exports = {
 	plugins: [
 		new webpack.ProvidePlugin({
 			_: "lodash",
-			"React": "react",
-			"Router": "react-router",
-			"uuid": "node-uuid",
-			"Bootstrap": "react-bootstrap"
+			"React"    : "react",
+			"Router"   : "react-router",
+			"uuid"     : "node-uuid",
+			"Bootstrap": "react-bootstrap",
+			"CryptoJS" : "crypto-js"
 		})
 	]
 };

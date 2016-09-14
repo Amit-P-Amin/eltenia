@@ -14,7 +14,7 @@ class Game {
 		this.season      = new Season(data.season);
 		this.farmland    = new Farmland(data.farmland, this.weather, this.season);
 		this.people      = {};
-		_.map(data.people, (person) => { this.people[uuid.v4()] = new Person(person, this.farmland) });
+		_.map(data.people, (person) => { this.people[person.id] = new Person(person, this.farmland) });
 		this.year        = 0;
 
 		this.run();

@@ -32,6 +32,8 @@ let game = new Game(gameData);
 window.game = game;
 window.shared = shared;
 window.config = config;
+window.store  = store;
+window.AES    = CryptoJS.AES;
 //
 
 export class Eltenia extends React.Component {

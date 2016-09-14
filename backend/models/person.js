@@ -1,5 +1,6 @@
 export default class Person {
 	constructor(params, farmland) {
+		this.id                = params.id;
 		this.intelligence      = params.intelligence;
 		this.conscientiousness = params.conscientiousness;
 		this.growthPotential   = params.growthPotential;

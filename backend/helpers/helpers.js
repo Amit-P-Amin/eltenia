@@ -1,7 +1,9 @@
 import weightedAverage from './weighted-average'
+import isUndefined     from './is-undefined'
 
 let helpers = {
-	weightedAverage: weightedAverage
+	weightedAverage: weightedAverage,
+	isUndefined: isUndefined
 };
 
 export { helpers }
