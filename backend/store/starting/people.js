@@ -1,0 +1,97 @@
+import { randomInt }  from '../../helpers/random-int';
+import { randomName } from '../../helpers/random-name';
+
+let people = [
+	{
+		id                : uuid.v4(),
+		intelligence      : randomInt(15,25),
+		conscientiousness : randomInt(15,25),
+		growthPotential   : randomInt(10,20),
+		name              : randomName(),
+		strength          : randomInt(5, 10),
+		farmingSkill      : randomInt(1,5),
+		age               : randomInt(15,30) + 0.1,
+		health            : randomInt(50,90),
+		foodStored        : randomInt(5,15),
+		appetite          : 0,
+		appetiteFulfilled : 1,
+		survivalRate      : 1.0,
+		growth            : 0,
+		hoursWorked       : 0,
+		foodProduced      : 0
+	},
+	{
+		id                : uuid.v4(),
+		intelligence      : randomInt(15,25),
+		conscientiousness : randomInt(15,25),
+		growthPotential   : randomInt(10,20),
+		name              : randomName(),
+		strength          : randomInt(5, 10),
+		farmingSkill      : randomInt(1,5),
+		age               : randomInt(15,30) + 0.1,
+		health            : randomInt(50,90),
+		foodStored        : randomInt(5,15),
+		appetite          : 0,
+		appetiteFulfilled : 1,
+		survivalRate      : 1.0,
+		growth            : 0,
+		hoursWorked       : 0,
+		foodProduced      : 0
+	},
+	{
+		id                : uuid.v4(),
+		intelligence      : randomInt(15,25),
+		conscientiousness : randomInt(15,25),
+		growthPotential   : randomInt(10,20),
+		name              : randomName(),
+		strength          : randomInt(5, 10),
+		farmingSkill      : randomInt(1,5),
+		age               : randomInt(15,30) + 0.1,
+		health            : randomInt(50,90),
+		foodStored        : randomInt(5,15),
+		appetite          : 0,
+		appetiteFulfilled : 1,
+		survivalRate      : 1.0,
+		growth            : 0,
+		hoursWorked       : 0,
+		foodProduced      : 0
+	},
+	{
+		id                : uuid.v4(),
+		intelligence      : randomInt(15,25),
+		conscientiousness : randomInt(15,25),
+		growthPotential   : randomInt(10,20),
+		name              : randomName(),
+		strength          : randomInt(5, 10),
+		farmingSkill      : randomInt(1,5),
+		age               : randomInt(15,30) + 0.1,
+		health            : randomInt(50,90),
+		foodStored        : randomInt(5,15),
+		appetite          : 0,
+		appetiteFulfilled : 1,
+		survivalRate      : 1.0,
+		growth            : 0,
+		hoursWorked       : 0,
+		foodProduced      : 0
+	},
+	{
+		id                : uuid.v4(),
+		intelligence      : randomInt(15,25),
+		conscientiousness : randomInt(15,25),
+		growthPotential   : randomInt(10,20),
+		name              : randomName(),
+		strength          : randomInt(5, 10),
+		farmingSkill      : randomInt(1,5),
+		age               : randomInt(15,30) + 0.1,
+		health            : randomInt(50,90),
+		foodStored        : randomInt(5,15),
+		appetite          : 0,
+		appetiteFulfilled : 1,
+		survivalRate      : 1.0,
+		growth            : 0,
+		hoursWorked       : 0,
+		foodProduced      : 0
+	}
+];
+
+export { people }

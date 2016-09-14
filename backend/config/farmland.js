@@ -1,4 +1,5 @@
 let farmland = {
+	MAX_ACRES_PER_FARMER: 5,
 	BEST_TO_WORST_LAND: ["amazing", "great", "normal", "poor", "terrible"],
 	LAND_QUALITY_MODIFIERS: {
 		amazing:  2.0,

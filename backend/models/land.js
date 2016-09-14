@@ -1,9 +1,11 @@
 export default class Land {
-	constructor(parent, size) {
+	constructor(params, parent) {
 		this.parent    = parent;
-		this.size      = size;
-		this.available = this.parent.fallowRate * this.size;
-		this.used      = this.available;
+		this.size      = params.size;
+		this.used      = params.used;
+	}
+	available() {
+		return this.parent.fallowRate * this.size;
 	}
 	fallowPercent() {
 		return this.used / this.size;

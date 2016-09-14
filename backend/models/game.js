@@ -7,14 +7,16 @@ import { Subscribable } from '../mixins/subscribable'
 import { shared }       from '../../shared/shared'
 
 class Game {
-	constructor(starting) {
-		this.weather  = new Weather(starting.weather);
-		this.season   = new Season(starting.season);
-		this.farmland = new Farmland(this.weather, this.season);
-		this.people   = _.tap({}, (people) => { _.times(5, () => { people[uuid.v4()] = new Person(this.farmland) }); });
-		this.year     = 0;
-
+	constructor(data) {
 		this.subscribers = [];
+
+		this.weather     = new Weather(data.weather);
+		this.season      = new Season(data.season);
+		this.farmland    = new Farmland(data.farmland, this.weather, this.season);
+		this.people      = {};
+		_.map(data.people, (person) => { this.people[uuid.v4()] = new Person(person, this.farmland) });
+		this.year        = 0;
+
 		this.run();
 	}
 	run() {

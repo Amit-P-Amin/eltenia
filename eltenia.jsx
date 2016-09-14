@@ -9,22 +9,25 @@ import { render }                           from 'react-dom'
 import { config }                           from './backend/config/config';
 import Save                                 from './backend/store/save/save';
 import Load                                 from './backend/store/load/load';
-import { starting }													from './backend/store/starting/starting';
+import { startingData }											from './backend/store/starting/startingData';
 import { withRouter }                       from 'react-router';
+
 
 // for store.js
 global.localStorage = require('localStorage');
 //
 
-let data = {};
+let store = require('store');
+
+let gameData = {};
 
 if (Load.isSavePresent()) {
-	data = new Load().saveData();
+	gameData = new Load().saveData();
 } else {
-	data = starting;
+	gameData = startingData;
 }
 
-let game = new Game(data);
+let game = new Game(gameData);
 // for Dev
 window.game = game;
 window.shared = shared;
@@ -38,6 +41,7 @@ export class Eltenia extends React.Component {
 		this.people = this.people.bind(this);
 		this.save   = this.save.bind(this);
 		this.load   = this.load.bind(this);
+		this.reset  = this.reset.bind(this);
 
 		setInterval(() => {
 			this.setState({ people: this.people() });
@@ -67,12 +71,22 @@ export class Eltenia extends React.Component {
 			alert("No save found");
 		}
 	}
+	reset() {
+		this.setState({ game: {} });
+		store.clear();
+		setTimeout(() => {
+			this.props.router.push('/');
+			window.game = new Game(startingData);
+			this.setState({ game: window.game });
+		}, 1000);
+	}
 	render() {
 		return (
 			<div>
 				<h1>{ "Hello" }</h1>
 				<Bootstrap.Button onClick={this.save}>Save</Bootstrap.Button>
 				<Bootstrap.Button onClick={this.load}>Load</Bootstrap.Button>
+				<Bootstrap.Button onClick={this.reset}>Reset</Bootstrap.Button>
 				<Link to={`/resource/farmland`}>Farmland</Link>
 				<People people={this.state.people}/>
 				{this.props.children}

@@ -10,7 +10,9 @@ export default class Load {
 	saveData() {
 		return {
 			weather: this.params.weather,
-			season: this.params.season
+			season: this.params.season,
+			people: this.params.people,
+			farmland: this.params.farmland
 		}
 	}
 }

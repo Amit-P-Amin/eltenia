@@ -1,38 +1,33 @@
 var gaussian = require('gaussian');
-import { shared } from '../../shared/shared';
-import { config } from '../config/config';
+import { shared }  from '../../shared/shared';
+import { config }  from '../config/config';
 import { helpers } from '../helpers/helpers';
-import Land       from './land';
+import Land        from './land';
 
 export default class Farmland {
-	constructor(weather, season) {
-		this.id               = uuid.v4();
+	constructor(params, weather, season) {
+		this.id               = params.id;
 
 		this.weather          = weather;
-		this.weatherModifier  = 0;
+		this.weatherModifier  = params.weatherModifier;
 		this.weather.subscribe(this.id, this.updateWeather.bind(this));
 		this.updateWeather();
 
 		this.season           = season;
-		this.seasonModifier   = 0;
+		this.seasonModifier   = params.seasonModifier;
 		this.season.subscribe(this.id, this.updateSeason.bind(this));
 		this.updateSeason();
 
-		this.maxAcresPerFarmer = 5;
-		this.acresPerFarmer    = 5;
 		this.farmers           = 0;
-		this.fallowRate        = 0.3;
+		this.fallowRate        = params.fallowRate;
 
 		this.lands            = {
-			amazing : new Land(this, 20),
-			great   : new Land(this, 50),
-			normal  : new Land(this, 100),
-			poor    : new Land(this, 200),
-			terrible: new Land(this, 500)
+			amazing : new Land(params.lands.amazing, this),
+			great   : new Land(params.lands.great, this),
+			normal  : new Land(params.lands.normal, this),
+			poor    : new Land(params.lands.poor, this),
+			terrible: new Land(params.lands.terrible, this)
 		};
-		this.landModifier     = 1;
-
-		this.totalModifier = 1;
 	}
 	addFarmer() {
 		this.farmers += 1;
@@ -40,18 +35,38 @@ export default class Farmland {
 	removeFarmer() {
 		this.farmers -= 1;
 	}
+	acresPerFarmer() {
+		return Math.min(this.cultivableLand() / this.farmers, config.farmland.MAX_ACRES_PER_FARMER);
+	}
+	cultivableLand() {
+		return _.reduce(config.farmland.BEST_TO_WORST_LAND, (land, quality) => {
+			return land + this.lands[quality].available();
+		}, 0);
+	}
+	landModifier() {
+		let modifiers = [];
+		let weights   = [];
+
+		_.map(config.farmland.BEST_TO_WORST_LAND, (quality) => {
+			modifiers.push(config.farmland.LAND_QUALITY_MODIFIERS[quality]);
+			weights.push(this.lands[quality].used);
+		});
+
+		return helpers.weightedAverage(modifiers, weights);
+	}
+	totalModifier() {
+		return this.landModifier() * this.weatherModifier * this.seasonModifier;
+	}
 	update() {
 		this.updateLandInUse();
 		this.updateLandSize();
-		this.updateLandModifier();
-		this.updateTotalModifier();
 	}
 	updateLandInUse() {
-		let landNeeded = this.acresPerFarmer * this.farmers;
+		let landNeeded = this.acresPerFarmer() * this.farmers;
 
 	  _.map(config.farmland.BEST_TO_WORST_LAND, (quality) => {
 			let land   = this.lands[quality];
-	  	land.used  = Math.min(landNeeded, land.available);
+	  	land.used  = Math.min(landNeeded, land.available());
 			landNeeded = Math.max(landNeeded - land.used, 0);
 		}, 0);
 	}
@@ -86,23 +101,6 @@ export default class Farmland {
 
 		land.remove(change);
 		this.lands[worseQuality].add(change);
-	}
-	updateLandModifier() {
-		let modifiers = [];
-		let weights   = [];
-
-		_.map(config.farmland.BEST_TO_WORST_LAND, (quality) => {
-			modifiers.push(config.farmland.LAND_QUALITY_MODIFIERS[quality]);
-			weights.push(this.lands[quality].used);
-		});
-
-		return helpers.weightedAverage(modifiers, weights);
-	}
-	updateTotalModifier() {
-		this.totalModifier = this.landModifier * this.weatherModifier * this.seasonModifier;
-	}
-	updateAcresPerFarmer(cultivableLand) {
-		this.acresPerFarmer =  cultivableLand / this.farmers;
 	}
 	updateSeason() {
 		this.seasonModifier = config.farmland.SEASON_MODIFIERS[this.season.name];

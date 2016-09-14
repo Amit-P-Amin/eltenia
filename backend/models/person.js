@@ -1,23 +1,20 @@
-import { randomInt }  from '../helpers/random-int';
-import { randomName } from '../helpers/random-name';
-
 export default class Person {
-	constructor(farmland) {
-		this.intelligence      = randomInt(15,25);
-		this.conscientiousness = randomInt(15,25);
-		this.growthPotential   = randomInt(10,20);
-		this.name              = randomName();
-		this.strength          = randomInt(5, 10);
-		this.farmingSkill      = randomInt(1,5);
-		this.age               = randomInt(15,30) + 0.1;
-		this.health            = randomInt(50,90);
-		this.foodStored        = randomInt(5,15);
-		this.appetite          = 0;
-		this.appetiteFulfilled = 1;
-		this.survivalRate      = 1.0;
-		this.growth            = 0;
-		this.hoursWorked       = 0;
-		this.foodProduced      = 0;
+	constructor(params, farmland) {
+		this.intelligence      = params.intelligence;
+		this.conscientiousness = params.conscientiousness;
+		this.growthPotential   = params.growthPotential;
+		this.name              = params.name;
+		this.strength          = params.strength;
+		this.farmingSkill      = params.farmingSkill;
+		this.age               = params.age;
+		this.health            = params.health;
+		this.foodStored        = params.foodStored;
+		this.appetite          = params.appetite;
+		this.appetiteFulfilled = params.appetiteFulfilled;
+		this.survivalRate      = params.survivalRate;
+		this.growth            = params.growth;
+		this.hoursWorked       = params.hoursWorked;
+		this.foodProduced      = params.foodProduced;
 
 		this.farmland          = farmland;
 		farmland.addFarmer();
