@@ -6,7 +6,7 @@ export default class Load {
 		return !(helpers.isUndefined(store.get('version')));
 	}
 	constructor() {
-		let key     = store.get('key');
+		this.key    = store.get('key');
 		this.params = store.getAll();
 	}
 	data() {
@@ -18,13 +18,40 @@ export default class Load {
 		}
 	}
 	decrypt(value) {
-		return CryptoJS.AES.decrypt(value, this.key);
+		return CryptoJS.AES.decrypt(value, this.key).toString(CryptoJS.enc.Utf8);
 	}
-	parse(data) {
-		_.mapValues(data, this.decrypt.bind(this));
+	load(data) {
+		return _.isObject(data) ? this.loadObject(data) : this.loadValue(data);
+	}
+	loadObject(data) {
+		if (Array.isArray(data)) {
+			return _.map(data, this.load.bind(this));
+		} else if (data.hasOwnProperty("type") && data.hasOwnProperty("encryptedMessage")) {
+			return this.loadValue(data);
+		} else {
+			return _.mapValues(data, this.load.bind(this));
+		}
+	}
+	loadValue(value) {
+		if (value['type'] == 'null') {
+			return null
+		} else {
+			console.log(value['encryptedMessage']);
+			let decryptedString = this.decrypt(value['encryptedMessage']);
+			return this.typecastString(decryptedString, value['type']);
+		}
 	}
 	saveData() {
-		_.mapValues(this.data(), this.parse.bind(this));
+		return _.mapValues(this.data(), this.load.bind(this));
+	}
+	typecastString(string, type) {
+		if (type == 'number') {
+			return parseFloat(string);
+		} else if (type == 'boolean') {
+			return JSON.parse(string);
+		} else {
+			return string;
+		}
 	}
 }
 

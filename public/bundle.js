@@ -128,6 +128,9 @@
 	window.config = _config.config;
 	window.store = store;
 	window.AES = CryptoJS.AES;
+	window.Latin1 = CryptoJS.enc.Latin1;
+	window.Hex = CryptoJS.enc.Hex;
+	window.Utf8 = CryptoJS.enc.Utf8;
 	//
 	
 	var Eltenia = exports.Eltenia = function (_React$Component) {
@@ -74483,12 +74486,7 @@
 		}, {
 			key: 'set',
 			value: function set(data, object) {
-				console.log(object);
-				var d = this.compose(data);
-				console.log(d);
 				store.set(object, this.compose(data));
-				console.log("  ");
-				console.log("  ");
 			}
 		}]);
 	
@@ -74913,7 +74911,7 @@
 		function Load() {
 			_classCallCheck(this, Load);
 	
-			var key = store.get('key');
+			this.key = store.get('key');
 			this.params = store.getAll();
 		}
 	
@@ -74930,17 +74928,55 @@
 		}, {
 			key: 'decrypt',
 			value: function decrypt(value) {
-				return CryptoJS.AES.decrypt(value, this.key);
+				console.log(this.key);
+				console.log(CryptoJS.AES.decrypt(value, this.key).toString(CryptoJS.enc.Utf8));
+				console.log('win!');
+				return CryptoJS.AES.decrypt(value, this.key).toString(CryptoJS.enc.Utf8);
 			}
 		}, {
-			key: 'parse',
-			value: function parse(data) {
-				_.mapValues(data, this.decrypt.bind(this));
+			key: 'load',
+			value: function load(data) {
+				return _.isObject(data) ? this.loadObject(data) : this.loadValue(data);
+			}
+		}, {
+			key: 'loadObject',
+			value: function loadObject(data) {
+				if (Array.isArray(data)) {
+					return _.map(data, this.load.bind(this));
+				} else if (data.hasOwnProperty("type") && data.hasOwnProperty("encryptedMessage")) {
+					return this.loadValue(data);
+				} else {
+					return _.mapValues(data, this.load.bind(this));
+				}
+			}
+		}, {
+			key: 'loadValue',
+			value: function loadValue(value) {
+				if (value['type'] == 'null') {
+					return null;
+				} else {
+					console.log(value['encryptedMessage']);
+					var decryptedString = this.decrypt(value['encryptedMessage']);
+					return this.typecastString(decryptedString, value['type']);
+				}
 			}
 		}, {
 			key: 'saveData',
 			value: function saveData() {
-				_.mapValues(this.data(), this.parse.bind(this));
+				var x = _.mapValues(this.data(), this.load.bind(this));
+				console.log(x);
+				return x;
+			}
+		}, {
+			key: 'typecastString',
+			value: function typecastString(string, type) {
+				if (type == 'number') {
+					return parseFloat(string);
+				} else if (type == 'boolean') {
+					return JSON.parse(string);
+				} else {
+					return string;
+				}
 			}
 		}]);
 	

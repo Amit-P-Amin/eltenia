@@ -61,11 +61,6 @@ export default class Save {
 		_.forEach(this.data(), this.set.bind(this));
 	}
 	set(data, object) {
-		console.log(object);
-		let d = this.compose(data);
-		console.log(d);
 		store.set(object, this.compose(data));
-		console.log("  ");
-		console.log("  ");
 	}
 }

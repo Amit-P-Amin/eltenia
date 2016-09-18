@@ -33,7 +33,8 @@ window.game = game;
 window.shared = shared;
 window.config = config;
 window.store  = store;
-window.AES    = CryptoJS.AES;
+// window.AES    = CryptoJS.AES;
+// window.Utf8   = CryptoJS.enc.Utf8;
 //
 
 export class Eltenia extends React.Component {
