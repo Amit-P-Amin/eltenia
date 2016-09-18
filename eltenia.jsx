@@ -12,7 +12,6 @@ import Load                                 from './backend/store/load/load';
 import { startingData }											from './backend/store/starting/startingData';
 import { withRouter }                       from 'react-router';
 
-
 // for store.js
 global.localStorage = require('localStorage');
 //
