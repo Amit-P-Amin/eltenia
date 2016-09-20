@@ -2,6 +2,7 @@ import Season           from './season';
 import Person           from './person.js';
 import Farmland         from './farmland';
 import Weather          from './weather';
+import Family           from './family';
 import { mix }          from '../mixins/mixin-builder';
 import { Subscribable } from '../mixins/subscribable'
 import { shared }       from '../../shared/shared'
@@ -14,7 +15,11 @@ class Game {
 		this.season      = new Season(data.season);
 		this.farmland    = new Farmland(data.farmland, this.weather, this.season);
 		this.people      = {};
-		_.map(data.people, (person) => { this.people[person.id] = new Person(person, this.farmland) });
+		this.families    = {};
+
+		_.map(data.people,   (person) => { this.people[person.id] = new Person(person, this.farmland) });
+		_.map(data.families, (family) => { this.families[family.id] = new Family(family, this.people)});
+
 		this.year        = 0;
 
 		this.run();

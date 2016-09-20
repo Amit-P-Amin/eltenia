@@ -15,7 +15,8 @@ export default class Load {
 			weather : this.params.weather,
 			season  : this.params.season,
 			people  : this.params.people,
-			farmland: this.params.farmland
+			farmland: this.params.farmland,
+			families: this.params.families
 		}
 	}
 	load(data) {

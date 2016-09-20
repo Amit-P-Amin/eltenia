@@ -3,7 +3,7 @@ import { randomName } from '../../helpers/random-name';
 
 let people = [
 	{
-		id                : uuid.v4(),
+		id                : "firstPerson",
 		intelligence      : randomInt(15,25),
 		conscientiousness : randomInt(15,25),
 		growthPotential   : randomInt(10,20),
@@ -21,7 +21,7 @@ let people = [
 		foodProduced      : 0
 	},
 	{
-		id                : uuid.v4(),
+		id                : "secondPerson",
 		intelligence      : randomInt(15,25),
 		conscientiousness : randomInt(15,25),
 		growthPotential   : randomInt(10,20),
@@ -39,7 +39,7 @@ let people = [
 		foodProduced      : 0
 	},
 	{
-		id                : uuid.v4(),
+		id                : "thirdPerson",
 		intelligence      : randomInt(15,25),
 		conscientiousness : randomInt(15,25),
 		growthPotential   : randomInt(10,20),
@@ -57,7 +57,7 @@ let people = [
 		foodProduced      : 0
 	},
 	{
-		id                : uuid.v4(),
+		id                : "fourthPerson",
 		intelligence      : randomInt(15,25),
 		conscientiousness : randomInt(15,25),
 		growthPotential   : randomInt(10,20),
@@ -75,7 +75,7 @@ let people = [
 		foodProduced      : 0
 	},
 	{
-		id                : uuid.v4(),
+		id                : "fifthPerson",
 		intelligence      : randomInt(15,25),
 		conscientiousness : randomInt(15,25),
 		growthPotential   : randomInt(10,20),

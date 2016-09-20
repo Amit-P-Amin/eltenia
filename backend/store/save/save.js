@@ -2,6 +2,7 @@ import Season      from './season';
 import Weather     from './weather';
 import People      from './people';
 import Farmland    from './farmland';
+import Families    from './families';
 import { shared }  from '../../../shared/shared.js';
 import SaveObject  from './../save-object';
 let store   = require('store');
@@ -23,7 +24,8 @@ export default class Save {
 			'weather' : new Weather(this.game.weather).data(),
 			'season'  : new Season(this.game.season).data(),
 			'people'  : new People(this.game.people).data(),
-			'farmland': new Farmland(this.game.farmland).data()
+			'farmland': new Farmland(this.game.farmland).data(),
+			'families': new Families(this.game.families).data()
 		}
 	}
 	run() {

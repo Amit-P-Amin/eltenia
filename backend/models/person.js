@@ -18,6 +18,7 @@ export default class Person {
 		this.foodProduced      = params.foodProduced;
 
 		this.farmland          = farmland;
+		this.family            = null;
 		farmland.addFarmer();
 	}
 	update() {
