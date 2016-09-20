@@ -1,21 +1,28 @@
+import Table from 'react-bootstrap/lib/Table';
+
 export default class Person extends React.Component {
 	render() {
 		return (
-			<div>
-				<p>{ this.props.name }</p>
-				<p>{ this.props.age }</p>
-				<p>{ this.props.farmingSkill } </p>
-				<p>{ this.props.foodProduced } </p>
-				<p>{ this.props.foodStored } </p>
-				<p>{ this.props.growthPotential } </p>
-				<p>{ this.props.appetite } </p>
-				<p>{ this.props.appetiteFulfilled } </p>
-				<p>{ this.props.health } </p>
-				<p>{ this.props.intelligence } </p>
-				<p>{ this.props.conscientiousness }</p>
-				<p>{ this.props.strength }</p>
-				<p>{ this.props.survivalRate }</p>
-			</div>
+			<Table striped bordered condensed hover>
+				<tbody>
+					<tr>
+						<td>{ this.props.name }</td>
+						<td>{ this.props.age }</td>
+						<td>{ this.props.farmingSkill } </td>
+						<td>{ this.props.foodProduced } </td>
+						<td>{ this.props.foodStored } </td>
+						<td>{ this.props.growthPotential } </td>
+						<td>{ this.props.appetite } </td>
+						<td>{ this.props.appetiteFulfilled } </td>
+						<td>{ this.props.health } </td>
+						<td>{ this.props.intelligence } </td>
+						<td>{ this.props.conscientiousness }</td>
+						<td>{ this.props.strength }</td>
+						<td>{ this.props.survivalRate }</td>
+						<td><Router.Link to={`/family/${this.props.familyID}`}>{ this.props.familyName }</Router.Link></td>
+					</tr>
+				</tbody>
+			</Table>
 		);
 	}
 }

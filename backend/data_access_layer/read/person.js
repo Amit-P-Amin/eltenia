@@ -15,7 +15,9 @@ export default class Person extends BaseReader {
 			intelligence:      this.model.intelligence,
 			name:              this.model.name,
 			strength:          this.model.strength,
-			survivalRate:      this.model.survivalRate
+			survivalRate:      this.model.survivalRate,
+			familyID:          this.model.family.id,
+			familyName:        this.model.family.name
 		}
 	}
 }

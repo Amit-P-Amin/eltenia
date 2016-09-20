@@ -4,6 +4,7 @@ export default class Family {
 		this.husbandID   = params.husbandID;
 		this.wifeID      = params.wifeID;
 		this.childrenIDs = params.childrenIDs;
+		this.name        = params.name;
 		this.people      = people;
 		this.directory   = this.buildDirectory();
 		this.updateFamilyReference();
@@ -37,6 +38,6 @@ export default class Family {
 		return this.people[this.wifeID];
 	}
 	children() {
-		return _.forEach(this.childrenIDs, (childID) => { return this.people[childID] }).bind(this)
+		return _.forEach(this.childrenIDs, (childID) => { return this.people[childID] })
 	}
 }
