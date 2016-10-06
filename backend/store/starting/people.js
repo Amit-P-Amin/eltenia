@@ -9,7 +9,6 @@ let people = [
 		growthPotential   : randomInt(10,20),
 		name              : randomName(),
 		strength          : randomInt(5, 10),
-		farmingSkill      : randomInt(1,5),
 		age               : randomInt(15,30) + 0.1,
 		health            : randomInt(50,90),
 		foodStored        : randomInt(5,15),
@@ -18,7 +17,9 @@ let people = [
 		survivalRate      : 1.0,
 		growth            : 0,
 		hoursWorked       : 0,
-		foodProduced      : 0
+		foodProduced      : 0,
+		skills            : { farming: randomInt(1,5) },
+		profession        : { name: 'farmer' }
 	},
 	{
 		id                : "secondPerson",
@@ -27,7 +28,6 @@ let people = [
 		growthPotential   : randomInt(10,20),
 		name              : randomName(),
 		strength          : randomInt(5, 10),
-		farmingSkill      : randomInt(1,5),
 		age               : randomInt(15,30) + 0.1,
 		health            : randomInt(50,90),
 		foodStored        : randomInt(5,15),
@@ -36,7 +36,9 @@ let people = [
 		survivalRate      : 1.0,
 		growth            : 0,
 		hoursWorked       : 0,
-		foodProduced      : 0
+		foodProduced      : 0,
+		skills            : { farming: randomInt(1,5) },
+		profession        : { name: 'farmer' }
 	},
 	{
 		id                : "thirdPerson",
@@ -45,7 +47,6 @@ let people = [
 		growthPotential   : randomInt(10,20),
 		name              : randomName(),
 		strength          : randomInt(5, 10),
-		farmingSkill      : randomInt(1,5),
 		age               : randomInt(15,30) + 0.1,
 		health            : randomInt(50,90),
 		foodStored        : randomInt(5,15),
@@ -54,7 +55,9 @@ let people = [
 		survivalRate      : 1.0,
 		growth            : 0,
 		hoursWorked       : 0,
-		foodProduced      : 0
+		foodProduced      : 0,
+		skills            : { farming: randomInt(1,5) },
+		profession        : { name: 'farmer' }
 	},
 	{
 		id                : "fourthPerson",
@@ -63,7 +66,6 @@ let people = [
 		growthPotential   : randomInt(10,20),
 		name              : randomName(),
 		strength          : randomInt(5, 10),
-		farmingSkill      : randomInt(1,5),
 		age               : randomInt(15,30) + 0.1,
 		health            : randomInt(50,90),
 		foodStored        : randomInt(5,15),
@@ -72,7 +74,9 @@ let people = [
 		survivalRate      : 1.0,
 		growth            : 0,
 		hoursWorked       : 0,
-		foodProduced      : 0
+		foodProduced      : 0,
+		skills            : { farming: randomInt(1,5) },
+		profession        : { name: 'farmer' }
 	},
 	{
 		id                : "fifthPerson",
@@ -81,7 +85,6 @@ let people = [
 		growthPotential   : randomInt(10,20),
 		name              : randomName(),
 		strength          : randomInt(5, 10),
-		farmingSkill      : randomInt(1,5),
 		age               : randomInt(15,30) + 0.1,
 		health            : randomInt(50,90),
 		foodStored        : randomInt(5,15),
@@ -90,7 +93,9 @@ let people = [
 		survivalRate      : 1.0,
 		growth            : 0,
 		hoursWorked       : 0,
-		foodProduced      : 0
+		foodProduced      : 0,
+		skills            : { farming: randomInt(1,5) },
+		profession        : { name: 'farmer' }
 	}
 ];
 

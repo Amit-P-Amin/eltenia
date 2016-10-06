@@ -4,14 +4,16 @@ let families = [
 		husbandID: "firstPerson",
 		wifeID: "secondPerson",
 		childrenIDs: [],
-		name: 'Firebaby'
+		name: 'Firebaby',
+		food: 10
 	},
 	{
 		id: "secondFamily",
 		husbandID: "thirdPerson",
 		wifeID:    "fourthPerson",
 		childrenIDs: ["fifthPerson"],
-		name: 'Mingol'
+		name: 'Mingol',
+		food: 5
 	}
 ]
 

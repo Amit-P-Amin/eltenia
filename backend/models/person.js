@@ -1,36 +1,48 @@
+import Skills     from './skills';
+// import Profession from './professions/profession';
+import ProfessionFactory from './professions/profession-factory';
+
 export default class Person {
-	constructor(params, farmland) {
+	constructor(params, resources) {
 		this.id                = params.id;
 		this.intelligence      = params.intelligence;
 		this.conscientiousness = params.conscientiousness;
 		this.growthPotential   = params.growthPotential;
 		this.name              = params.name;
 		this.strength          = params.strength;
-		this.farmingSkill      = params.farmingSkill;
+		this.skills            = new Skills(params.skills);
+		// this.farmingSkill      = params.farmingSkill;
+
 		this.age               = params.age;
 		this.health            = params.health;
-		this.foodStored        = params.foodStored;
+		// this.foodStored        = params.foodStored;
 		this.appetite          = params.appetite;
 		this.appetiteFulfilled = params.appetiteFulfilled;
 		this.survivalRate      = params.survivalRate;
 		this.growth            = params.growth;
 		this.hoursWorked       = params.hoursWorked;
-		this.foodProduced      = params.foodProduced;
+		// this.foodProduced      = params.foodProduced;
 
-		this.farmland          = farmland;
+		// this.profession        = Profession.build(this, resources, params.profession);
+		this.profession        = ProfessionFactory.build(this, resources, params.profession);
+
+		// this.farmland          = farmland;
 		this.family            = null;
-		farmland.addFarmer();
+		// farmland.addFarmer();
 	}
 	update() {
 		// Work
 		this._updateHoursWorked();
 		this._updateAppetite();
-		this._updateFoodProduced();
-		this._updateFarmingSkill();
 
-		// Eat
-		this._updateAppetiteFulfilled();
-		this._updateFoodStored();
+		this.profession.run();
+		// Move to farmer
+		// this._updateFoodProduced();
+		// this._updateFarmingSkill();
+
+		// Eat --> Split to family
+		// this._updateAppetiteFulfilled();
+		// this._updateFoodStored();
 
 		// Age
 		this._updateAge();
@@ -45,18 +57,12 @@ export default class Person {
 	_updateAppetite() {
 		this.appetite          = this.strength * .1 * this.hoursWorked;
 	}
-	_updateFoodProduced() {
-		this.foodProduced      = this.strength * .1 * this.hoursWorked * this.farmingSkill;
-	}
-	_updateFarmingSkill() {
-		this.farmingSkill      = this.farmingSkill + this.intelligence / 1000 * this.hoursWorked;
-	}
 	_updateAppetiteFulfilled() {
 		this.appetiteFulfilled = Math.min((this.foodStored + this.foodProduced) / this.appetite, 1);
 	}
-	_updateFoodStored() {
-		this.foodStored        = Math.max((this.foodStored + this.foodProduced) - this.appetite, 0);
-	}
+	// _updateFoodStored() {
+	// 	this.foodStored        = Math.max((this.foodStored + this.foodProduced) - this.appetite, 0);
+	// }
 	_updateAge() {
 		this.age               = this.age + .005;
 	}

@@ -15,7 +15,8 @@ export default class BaseReader {
 	}
 	_validate(value) {
 		if (typeof value === "undefined") {
-			console.log("[BaseReader] Error, value in " + this.model + "missing")
+			console.log("[BaseReader] Error, value missing from " + this.model.constructor.name)
+			console.log(this.readModel());
 		}
 		// implement isNan checking
 	}

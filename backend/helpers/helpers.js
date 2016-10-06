@@ -1,11 +1,13 @@
-import weightedAverage from './weighted-average'
+import capitalize      from './capitalize'
 import isUndefined     from './is-undefined'
 import typecastString  from './typecast-string'
+import weightedAverage from './weighted-average'
 
 let helpers = {
-	weightedAverage: weightedAverage,
+	capitalize: capitalize,
 	isUndefined: isUndefined,
-	typecastString: typecastString
+	typecastString: typecastString,
+	weightedAverage: weightedAverage
 };
 
 export { helpers }

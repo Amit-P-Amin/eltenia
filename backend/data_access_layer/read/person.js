@@ -1,4 +1,6 @@
-import BaseReader from './base-reader'
+import BaseReader       from './base-reader'
+import SkillReader      from './skills'
+import ProfessionReader from './profession'
 
 export default class Person extends BaseReader {
 	readModel() {
@@ -7,9 +9,10 @@ export default class Person extends BaseReader {
 			appetite:          this.model.appetite,
 			appetiteFulfilled: this.model.appetiteFulfilled,
 			conscientiousness: this.model.conscientiousness,
-			farmingSkill:      this.model.farmingSkill,
-			foodProduced:      this.model.foodProduced,
-			foodStored:        this.model.foodStored,
+			skills:            new SkillReader(this.model.skills).read(),
+			profession:        new ProfessionReader(this.model.profession).read(),
+			// foodProduced:      this.model.foodProduced,
+			// foodStored:        this.model.foodStored,
 			growthPotential:   this.model.growthPotential,
 			health:            this.model.health,
 			intelligence:      this.model.intelligence,

@@ -9,6 +9,7 @@ export default class Families {
 				husbandID   : family.husbandID,
 				wifeID      : family.wifeID,
 				childrenIDs : family.childrenIDs,
+				food        : family.food
 			}
 		})
 	}

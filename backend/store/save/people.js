@@ -1,3 +1,6 @@
+import Skills from './skills';
+import Profession from './profession';
+
 export default class People {
 	constructor(people) {
 		this.people = people;
@@ -11,7 +14,6 @@ export default class People {
 				growthPotential   : person.growthPotential,
 				name              : person.name,
 				strength          : person.strength,
-				farmingSkill      : person.farmingSkill,
 				age               : person.age,
 				health            : person.health,
 				foodStored        : person.foodStored,
@@ -20,7 +22,9 @@ export default class People {
 				survivalRate      : person.survivalRate,
 				growth            : person.growth,
 				hoursWorked       : person.hoursWorked,
-				foodProduced      : person.foodProduced
+				foodProduced      : person.foodProduced,
+				skills            : new Skills(person.skills).data(),
+				profession        : new Profession(person.profession).data()
 			}
 		})
 	}

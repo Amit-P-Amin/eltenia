@@ -8,7 +8,7 @@ export default class People extends React.Component {
 	}
 	peopleRows() {
 		return _.map(this.props.people, (person) => {
-			return <PeopleRow {..._.pick(person, ["key", "name", "age", "strength", "farmingSkill", "id"])}/>
+			return <PeopleRow {..._.pick(person, ["key", "name", "age", "strength", "profession", "id"])}/>
 		})
 	}
 	render() {
@@ -19,7 +19,7 @@ export default class People extends React.Component {
 						<th>First Name</th>
 						<th>Age</th>
 						<th>Strength</th>
-						<th>Farming Skill</th>
+						<th>Profession</th>
 					</tr>
 				</thead>
 				<tbody>{this.peopleRows()}</tbody>

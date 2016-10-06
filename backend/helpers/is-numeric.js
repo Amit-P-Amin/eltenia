@@ -1,3 +1,3 @@
-export default function (n) {
+export default function(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 }

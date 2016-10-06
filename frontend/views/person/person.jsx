@@ -8,12 +8,8 @@ export default class Person extends React.Component {
 					<tr>
 						<td>{ this.props.name }</td>
 						<td>{ this.props.age }</td>
-						<td>{ this.props.farmingSkill } </td>
-						<td>{ this.props.foodProduced } </td>
-						<td>{ this.props.foodStored } </td>
+						<td>{ this.props.profession.name } </td>
 						<td>{ this.props.growthPotential } </td>
-						<td>{ this.props.appetite } </td>
-						<td>{ this.props.appetiteFulfilled } </td>
 						<td>{ this.props.health } </td>
 						<td>{ this.props.intelligence } </td>
 						<td>{ this.props.conscientiousness }</td>

@@ -14,18 +14,16 @@ class Game {
 		this.weather     = new Weather(data.weather);
 		this.season      = new Season(data.season);
 		this.farmland    = new Farmland(data.farmland, this.weather, this.season);
+		this.resources   = { farmland: this.farmland };
 		this.people      = {};
 		this.families    = {};
 
-		_.map(data.people,   (person) => { this.people[person.id] = new Person(person, this.farmland) });
+		_.map(data.people,   (person) => { this.people[person.id] = new Person(person, this.resources) });
 		_.map(data.families, (family) => { this.families[family.id] = new Family(family, this.people)});
 
 		this.year        = 0;
 
-		this.run();
-	}
-	run() {
-		setInterval(() => { this._update(); }, shared.constants.TICK);
+		this._run();
 	}
 	runTicks(ticks) {
 		setTimeout(() => {
@@ -33,8 +31,12 @@ class Game {
 			if (ticks > 1) { this.runTicks(ticks - 1); }
 		}, 20)
 	}
+	_run() {
+		setInterval(() => { this._update(); }, shared.constants.TICK);
+	}
 	_update() {
 		this.year = _.round(this.year + 1.0 / shared.constants.DAYS_IN_YEAR, 6);
+
 
 		_.mapValues(this.people, (person) => { person.update() });
 		this.farmland.update();
