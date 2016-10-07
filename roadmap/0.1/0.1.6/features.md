@@ -1,9 +1,16 @@
-Person
+Views
 -----------
-1. Death
+1. Home with summary stats
+2. People
+3. Marketplace
+4. Natural Resources
 
-Family
------------
-1. Create FoodStore and Food classes
-2. For now, split food among members of family evenly
-3. Modify farming values to be close to interesting (e.g. people start to die)
+Natural Resources View
+-------------
+- Total Land
+- Max land per farmer
+- Current land per farmer
+- Fallow rate slider
+
+2. A horizontal pie
+

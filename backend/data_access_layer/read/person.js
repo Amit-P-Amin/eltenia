@@ -3,24 +3,22 @@ import SkillReader      from './skills'
 import ProfessionReader from './profession'
 
 export default class Person extends BaseReader {
-	readModel() {
+	getParameters() {
 		return {
-			age:               this.model.age,
-			appetite:          this.model.appetite,
-			appetiteFulfilled: this.model.appetiteFulfilled,
-			conscientiousness: this.model.conscientiousness,
-			skills:            new SkillReader(this.model.skills).read(),
-			profession:        new ProfessionReader(this.model.profession).read(),
-			// foodProduced:      this.model.foodProduced,
-			// foodStored:        this.model.foodStored,
-			growthPotential:   this.model.growthPotential,
-			health:            this.model.health,
-			intelligence:      this.model.intelligence,
-			name:              this.model.name,
-			strength:          this.model.strength,
-			survivalRate:      this.model.survivalRate,
-			familyID:          this.model.family.id,
-			familyName:        this.model.family.name
+			age:               this.object.age,
+			appetite:          this.object.appetite,
+			appetiteFulfilled: this.object.appetiteFulfilled,
+			conscientiousness: this.object.conscientiousness,
+			skills:            new SkillReader(this.object.skills).read(),
+			profession:        new ProfessionReader(this.object.profession).read(),
+			growthPotential:   this.object.growthPotential,
+			health:            this.object.health,
+			intelligence:      this.object.intelligence,
+			name:              this.object.name,
+			strength:          this.object.strength,
+			survivalRate:      this.object.survivalRate,
+			familyID:          this.object.family.id,
+			familyName:        this.object.family.name
 		}
 	}
 }

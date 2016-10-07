@@ -9,11 +9,11 @@ export default class Farmland {
 			seasonModifier  : this.farmland.seasonModifier,
 			fallowRate      : this.farmland.fallowRate,
 			lands           : {
-				amazing  : { size: this.farmland.lands.amazing.size, used: this.farmland.lands.amazing.used },
-				great    : { size: this.farmland.lands.great.size, used: this.farmland.lands.great.used },
-				normal   : { size: this.farmland.lands.normal.size, used: this.farmland.lands.normal.used },
-				poor     : { size: this.farmland.lands.poor.size, used: this.farmland.lands.poor.used },
-				terrible : { size: this.farmland.lands.terrible.size, used: this.farmland.lands.terrible.used },
+				"Amazing"  : { size: this.farmland.lands["Amazing"].size, used: this.farmland.lands["Amazing"].used },
+				"Great"    : { size: this.farmland.lands["Great"].size, used: this.farmland.lands["Great"].used },
+				"Normal"   : { size: this.farmland.lands["Normal"].size, used: this.farmland.lands["Normal"].used },
+				"Poor"     : { size: this.farmland.lands["Poor"].size, used: this.farmland.lands["Poor"].used },
+				"Terrible" : { size: this.farmland.lands["Terrible"].size, used: this.farmland.lands["Terrible"].used },
 			}
 		}
 	}

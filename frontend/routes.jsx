@@ -1,13 +1,15 @@
-import PersonWrapper   from './wrappers/person';
-import FarmlandWrapper from './wrappers/farmland';
-import FamilyWrapper   from './wrappers/family';
-import { Route }       from 'react-router'
+import PeopleWrapper    from './wrappers/people';
+import PersonWrapper    from './wrappers/person';
+import ResourcesWrapper from './wrappers/resources';
+import FamilyWrapper    from './wrappers/family';
+import { Route }        from 'react-router'
 
 export default (Eltenia) => {
 	return (
 		<Route path="/" component={Eltenia}>
+			<Route path="/people"     component={PeopleWrapper}/>
 			<Route path="/person/:id" component={PersonWrapper}/>
-			<Route path="/resource/farmland" component={FarmlandWrapper}/>
+			<Route path="/resources"  component={ResourcesWrapper}/>
 			<Route path="/family/:id" component={FamilyWrapper}/>
 		</Route>
 	)

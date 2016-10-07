@@ -1,7 +1,5 @@
 require("./node_modules/bootstrap/dist/css/bootstrap.min.css");
 import Game                                 from './backend/models/game.js';
-import People                               from './frontend/views/people/people.jsx';
-import PersonReader                         from './backend/data_access_layer/read/person';
 import routes                               from './frontend/routes';
 import { shared }                           from './shared/shared.js';
 import { Router, Link, hashHistory }        from 'react-router'
@@ -11,6 +9,8 @@ import Save                                 from './backend/store/save/save';
 import Load                                 from './backend/store/load/load';
 import { startingData }											from './backend/store/starting/startingData';
 import { withRouter }                       from 'react-router';
+import Header                               from './frontend/views/header/header';
+import Navigation                           from './frontend/views/navigation/navigation'
 
 // for store.js
 global.localStorage = require('localStorage');
@@ -36,27 +36,13 @@ window.store  = store;
 // window.Utf8   = CryptoJS.enc.Utf8;
 //
 
-export class Eltenia extends React.Component {
+class Eltenia extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state  = { game: game };
-		this.people = this.people.bind(this);
 		this.save   = this.save.bind(this);
 		this.load   = this.load.bind(this);
 		this.reset  = this.reset.bind(this);
-
-		setInterval(() => {
-			this.setState({ people: this.people() });
-		}, shared.constants.TICK);
-	}
-	people() {
-		return _.map(this.state.game.people, (person, id) => {
-			let parameters = new PersonReader(person).read();
-			parameters.key = id;
-			parameters.id  = id;
-
-			return parameters
-		})
 	}
 	save() {
 		new Save(this.state.game).run();
@@ -84,21 +70,29 @@ export class Eltenia extends React.Component {
 	}
 	render() {
 		return (
-			<div>
-				<h1>{ "Hello" }</h1>
-				<Bootstrap.Button onClick={this.save}>Save</Bootstrap.Button>
-				<Bootstrap.Button onClick={this.load}>Load</Bootstrap.Button>
-				<Bootstrap.Button onClick={this.reset}>Reset</Bootstrap.Button>
-				<Link to={`/resource/farmland`}>Farmland</Link>
-				<People people={this.state.people}/>
-				{this.props.children}
+			<div style={styles.base}>
+				<Header saveHandler={this.save} loadHandler={this.load} resetHandler={this.reset}/>
+				<Navigation router={this.props.router}/>
+				<div style={styles.body}>
+					{this.props.children}
+				</div>
 			</div>
 		);
 	}
 }
 
+var styles = {
+	base: {
+		fontFamily : 'Raleway, sans-serif'
+	},
+	body: {
+		width      : '900px',
+		margin     : '0 auto'
+	}
+};
+
 render((
 	<Router history={hashHistory}>
-		{ routes(withRouter(Eltenia)) }
+		{ routes(withRouter(Radium(Eltenia))) }
 	</Router>
 ), document.querySelector("#app"));

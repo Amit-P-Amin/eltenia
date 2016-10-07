@@ -31,7 +31,9 @@ module.exports = {
 			"Router"   : "react-router",
 			"uuid"     : "node-uuid",
 			"Bootstrap": "react-bootstrap",
-			"CryptoJS" : "crypto-js"
-		})
+			"CryptoJS" : "crypto-js",
+			"Radium"   : "radium",
+			"Col"      : 'react-bootstrap/lib/Col'
+ 		})
 	]
 };

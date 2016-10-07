@@ -1,12 +1,12 @@
 import isNumeric from '../../helpers/is-numeric'
 
 export default class BaseReader {
-	constructor(model) {
-		this.model = model;
+	constructor(object) {
+		this.object = object;
 	}
 	read() {
 		let cleaned    = {};
-		let parameters = this.readModel();
+		let parameters = this.getParameters();
 
 		for (var key in parameters) { this._validate(parameters[key]) }
 		for (var key in parameters) { cleaned[key] = this._clean(parameters[key]) }
@@ -15,8 +15,9 @@ export default class BaseReader {
 	}
 	_validate(value) {
 		if (typeof value === "undefined") {
-			console.log("[BaseReader] Error, value missing from " + this.model.constructor.name)
-			console.log(this.readModel());
+			console.log("[BaseReader] Error, value missing from " + this.object.constructor.name);
+			console.log(this.object);
+			console.log(this.getParameters());
 		}
 		// implement isNan checking
 	}

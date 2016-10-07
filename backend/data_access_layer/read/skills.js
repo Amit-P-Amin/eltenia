@@ -1,9 +1,9 @@
 import BaseReader from './base-reader'
 
 export default class Skills extends BaseReader {
-	readModel() {
+	getParameters() {
 		return {
-			farming: this.model.farming
+			farming: this.object.farming
 		}
 	}
 }

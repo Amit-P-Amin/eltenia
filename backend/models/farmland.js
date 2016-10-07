@@ -5,6 +5,12 @@ import { helpers } from '../helpers/helpers';
 import Land        from './land';
 
 export default class Farmland {
+	static seasonModifiers() {
+		return config.farmland.SEASON_MODIFIERS;
+	}
+	static weatherModifiers() {
+		return config.farmland.WEATHER_MODIFIERS;
+	}
 	constructor(params, weather, season) {
 		this.id               = params.id;
 
@@ -22,11 +28,11 @@ export default class Farmland {
 		this.fallowRate        = params.fallowRate;
 
 		this.lands            = {
-			amazing : new Land(params.lands.amazing, this),
-			great   : new Land(params.lands.great, this),
-			normal  : new Land(params.lands.normal, this),
-			poor    : new Land(params.lands.poor, this),
-			terrible: new Land(params.lands.terrible, this)
+			"Amazing"  : new Land(params.lands["Amazing"], this),
+			"Great"    : new Land(params.lands["Great"], this),
+			"Normal"   : new Land(params.lands["Normal"], this),
+			"Poor"     : new Land(params.lands["Poor"], this),
+			"Terrible" : new Land(params.lands["Terrible"], this)
 		};
 	}
 	addFarmer() {
@@ -103,10 +109,10 @@ export default class Farmland {
 		this.lands[worseQuality].add(change);
 	}
 	updateSeason() {
-		this.seasonModifier = config.farmland.SEASON_MODIFIERS[this.season.name];
+		this.seasonModifier = this.constructor.seasonModifiers()[this.season.name];
 	}
 	updateWeather() {
-		this.weatherModifier = config.farmland.WEATHER_MODIFIERS[this.weather.description];
+		this.weatherModifier = this.constructor.weatherModifiers()[this.weather.description];
 	}
 }
 
