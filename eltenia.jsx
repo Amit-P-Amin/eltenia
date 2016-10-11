@@ -30,8 +30,22 @@ if (Load.isSavePresent()) {
 
 let game = new Game(gameData);
 
+// class Fuck {
+// 	constructor() {
+// 		this.callback = () => {};
+// 	}
+//  	subscribe(callback) {
+// 		this.callback = callback;
+// 	}
+// }
+
+let RouterInterface = new class {
+	constructor()       { this.callback = () => {}; }
+	subscribe(callback) { this.callback = callback; }
+}();
+
 // for Dev
-window.game = game;
+window.game   = game;
 window.shared = shared;
 window.config = config;
 window.store  = store;
@@ -42,10 +56,16 @@ window.store  = store;
 class Eltenia extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state  = { game: game };
-		this.save   = this.save.bind(this);
-		this.load   = this.load.bind(this);
-		this.reset  = this.reset.bind(this);
+		this.state           = { game: game, currentRouteRoot: '' };
+		this.save            = this.save.bind(this);
+		this.load            = this.load.bind(this);
+		this.reset           = this.reset.bind(this);
+		this.updateRouteRoot = this.updateRouteRoot.bind(this);
+
+		RouterInterface.subscribe(this.updateRouteRoot);
+	}
+	updateRouteRoot(routeRoot) {
+		this.setState({ currentRouteRoot: routeRoot })
 	}
 	save() {
 		new Save(this.state.game).run();
@@ -75,7 +95,7 @@ class Eltenia extends React.Component {
 		return (
 			<div style={styles.base}>
 				<Header saveHandler={this.save} loadHandler={this.load} resetHandler={this.reset}/>
-				<Navigation router={this.props.router}/>
+				<Navigation router={this.props.router} currentRouteRoot={this.state.currentRouteRoot}/>
 				<div style={styles.body}>
 					<Col xs={1}/>
 					<Col xs={10}>{this.props.children}</Col>
@@ -101,3 +121,10 @@ render((
 		{ routes(withRouter(Radium(Eltenia))) }
 	</Router>
 ), document.querySelector("#app"));
+
+hashHistory.listen( (location) =>  {
+	let path              = location.pathname.slice(1);
+	let subpathSlashIndex = path.indexOf("/");
+
+	RouterInterface.callback(subpathSlashIndex > 0 ? path.slice(0, subpathSlashIndex) : path);
+});

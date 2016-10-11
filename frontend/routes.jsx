@@ -8,7 +8,7 @@ export default (Eltenia) => {
 	return (
 		<Route path="/" component={Eltenia}>
 			<Route path="/people"     component={PeopleWrapper}/>
-			<Route path="/person/:id" component={PersonWrapper}/>
+			<Route path="/people/:id" component={PersonWrapper}/>
 			<Route path="/resources"  component={ResourcesWrapper}/>
 			<Route path="/family/:id" component={FamilyWrapper}/>
 		</Route>

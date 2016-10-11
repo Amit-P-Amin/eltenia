@@ -101,11 +101,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	__webpack_require__(468);
 	// Must be at the top, to set the helpers and BaseComponents globals
@@ -127,6 +127,32 @@
 	
 	var game = new _game2.default(gameData);
 	
+	// class Fuck {
+	// 	constructor() {
+	// 		this.callback = () => {};
+	// 	}
+	//  	subscribe(callback) {
+	// 		this.callback = callback;
+	// 	}
+	// }
+	
+	var RouterInterface = new (function () {
+		function _class() {
+			_classCallCheck(this, _class);
+	
+			this.callback = function () {};
+		}
+	
+		_createClass(_class, [{
+			key: 'subscribe',
+			value: function subscribe(callback) {
+				this.callback = callback;
+			}
+		}]);
+	
+		return _class;
+	}())();
+	
 	// for Dev
 	window.game = game;
 	window.shared = _shared.shared;
@@ -144,14 +170,22 @@
 	
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Eltenia).call(this, props));
 	
-			_this.state = { game: game };
+			_this.state = { game: game, currentRouteRoot: '' };
 			_this.save = _this.save.bind(_this);
 			_this.load = _this.load.bind(_this);
 			_this.reset = _this.reset.bind(_this);
+			_this.updateRouteRoot = _this.updateRouteRoot.bind(_this);
+	
+			RouterInterface.subscribe(_this.updateRouteRoot);
 			return _this;
 		}
 	
 		_createClass(Eltenia, [{
+			key: 'updateRouteRoot',
+			value: function updateRouteRoot(routeRoot) {
+				this.setState({ currentRouteRoot: routeRoot });
+			}
+		}, {
 			key: 'save',
 			value: function save() {
 				new _save2.default(this.state.game).run();
@@ -192,7 +226,7 @@
 					'div',
 					{ style: styles.base },
 					React.createElement(_header2.default, { saveHandler: this.save, loadHandler: this.load, resetHandler: this.reset }),
-					React.createElement(_navigation2.default, { router: this.props.router }),
+					React.createElement(_navigation2.default, { router: this.props.router, currentRouteRoot: this.state.currentRouteRoot }),
 					React.createElement(
 						'div',
 						{ style: styles.body },
@@ -226,6 +260,13 @@
 		{ history: _reactRouter.hashHistory },
 		(0, _routes2.default)((0, _reactRouter.withRouter)(Radium(Eltenia)))
 	), document.querySelector("#app"));
+	
+	_reactRouter.hashHistory.listen(function (location) {
+		var path = location.pathname.slice(1);
+		var subpathSlashIndex = path.indexOf("/");
+	
+		RouterInterface.callback(subpathSlashIndex > 0 ? path.slice(0, subpathSlashIndex) : path);
+	});
 	
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/home/amit/Desktop/eltenia/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "eltenia.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(33), __webpack_require__(61)))
@@ -26819,7 +26860,7 @@
 			_reactRouter.Route,
 			{ path: '/', component: Eltenia },
 			React.createElement(_reactRouter.Route, { path: '/people', component: _people2.default }),
-			React.createElement(_reactRouter.Route, { path: '/person/:id', component: _person2.default }),
+			React.createElement(_reactRouter.Route, { path: '/people/:id', component: _person2.default }),
 			React.createElement(_reactRouter.Route, { path: '/resources', component: _resources2.default }),
 			React.createElement(_reactRouter.Route, { path: '/family/:id', component: _family2.default })
 		);
@@ -31151,7 +31192,7 @@
 						null,
 						React.createElement(
 							Router.Link,
-							{ to: "/person/" + this.props.id },
+							{ to: "/people/" + this.props.id },
 							this.props.name
 						)
 					),
@@ -62206,17 +62247,29 @@
 	
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Navigation).call(this, props));
 	
-			_this.state = { activeKey: 1 };
-			console.log(_this.props.location.pathname);
-			console.log(_this.state.location.pathname);
+			_this.activeKey = _this.activeKey.bind(_this);
 			_this.handleSelect = _this.handleSelect.bind(_this);
 			return _this;
 		}
 	
 		_createClass(Navigation, [{
+			key: 'activeKey',
+			value: function activeKey() {
+				var route = this.props.currentRouteRoot;
+	
+				if (route == '') {
+					return 1;
+				}
+				if (route == 'people' || route == 'family') {
+					return 2;
+				}
+				if (route == 'resources') {
+					return 3;
+				}
+			}
+		}, {
 			key: 'handleSelect',
 			value: function handleSelect(eventKey) {
-				this.setState({ activeKey: eventKey });
 				if (eventKey == 1) {
 					this.props.router.push('/');
 				}
@@ -62235,7 +62288,7 @@
 			value: function render() {
 				return React.createElement(
 					_Nav2.default,
-					{ style: styles.base, bsStyle: 'tabs', activeKey: this.state.activeKey, onSelect: this.handleSelect },
+					{ style: styles.base, bsStyle: 'tabs', activeKey: this.activeKey(), onSelect: this.handleSelect },
 					React.createElement(
 						_NavItem2.default,
 						{ eventKey: 1 },

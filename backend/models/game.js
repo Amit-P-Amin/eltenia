@@ -37,7 +37,6 @@ class Game {
 	_update() {
 		this.year = _.round(this.year + 1.0 / shared.constants.DAYS_IN_YEAR, 6);
 
-
 		_.mapValues(this.people, (person) => { person.update() });
 		this.farmland.update();
 		if (this.year % 1 == 0)    { this.weather.change(); }
