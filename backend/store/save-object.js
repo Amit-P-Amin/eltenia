@@ -1,7 +1,9 @@
-import { helpers } from '../helpers/helpers';
 let store   = require('store');
 
 export default class SaveObject {
+	static isSaveObject(object) {
+		return object.hasOwnProperty("type") && (object.hasOwnProperty("encryptedMessage") || object.hasOwnProperty("message"));
+	}
 	static key() {
 		let key = store.get('key');
 
@@ -31,20 +33,20 @@ export default class SaveObject {
 			message = value.toString();
 		}
 
-		return { type: type, encryptedMessage: this.encrypt(message) };
+		return { type: type, encryptedMessage: this._encrypt(message) };
 	}
 	decompose(value) {
 		if (value['type'] == 'null') {
 			return null;
 		} else {
-			let decryptedString = this.decrypt(value['encryptedMessage']);
+			let decryptedString = this._decrypt(value['encryptedMessage']);
 			return helpers.typecastString(decryptedString, value['type']);
 		}
 	}
-	encrypt(message) {
+	_encrypt(message) {
 		return CryptoJS.AES.encrypt(message, this.key).toString();
 	}
-	decrypt(value) {
+	_decrypt(value) {
 		return CryptoJS.AES.decrypt(value, this.key).toString(CryptoJS.enc.Utf8);
 	}
 }

@@ -1,4 +1,3 @@
-import { helpers } from '../../helpers/helpers';
 import SaveObject  from './../save-object';
 let store = require('store');
 
@@ -25,7 +24,7 @@ export default class Load {
 	loadObject(data) {
 		if (Array.isArray(data)) {
 			return _.map(data, this.load.bind(this));
-		} else if (data.hasOwnProperty("type") && data.hasOwnProperty("encryptedMessage")) {
+		} else if (SaveObject.isSaveObject(data)) {
 			return this.saveObject.decompose(data);
 		} else {
 			return _.mapValues(data, this.load.bind(this));

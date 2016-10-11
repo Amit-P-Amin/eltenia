@@ -6,6 +6,7 @@ export default class Families {
 		return _.map(this.families, (family) => {
 			return {
 				id          : family.id,
+				name        : family.name,
 				husbandID   : family.husbandID,
 				wifeID      : family.wifeID,
 				childrenIDs : family.childrenIDs,

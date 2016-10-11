@@ -4,7 +4,7 @@ export default class Profession {
 	}
 	data() {
 		return {
-			name: this.profession.name()
+			name: this.profession.constructor.professionName()
 		}
 	}
 }

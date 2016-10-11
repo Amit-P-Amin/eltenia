@@ -1,24 +1,26 @@
 require("./node_modules/bootstrap/dist/css/bootstrap.min.css");
+// Must be at the top, to set the helpers and BaseComponents globals
+import helpers                              from './backend/helpers/helpers';
+import BaseComponents                       from './frontend/base-components/base-components';
+//
 import Game                                 from './backend/models/game.js';
 import routes                               from './frontend/routes';
 import { shared }                           from './shared/shared.js';
-import { Router, Link, hashHistory }        from 'react-router'
+import { Router, hashHistory }              from 'react-router'
 import { render }                           from 'react-dom'
 import { config }                           from './backend/config/config';
 import Save                                 from './backend/store/save/save';
 import Load                                 from './backend/store/load/load';
-import { startingData }											from './backend/store/starting/startingData';
+import { startingData }   									from './backend/store/starting/starting-data';
 import { withRouter }                       from 'react-router';
 import Header                               from './frontend/views/header/header';
-import Navigation                           from './frontend/views/navigation/navigation'
-
-// for store.js
-global.localStorage = require('localStorage');
-//
+import Navigation                           from './frontend/views/navigation/navigation';
 
 let store = require('store');
 
 let gameData = {};
+
+// window.helpers        = require('./backend/helpers/helpers');
 
 if (Load.isSavePresent()) {
 	gameData = new Load().saveData();
@@ -27,6 +29,7 @@ if (Load.isSavePresent()) {
 }
 
 let game = new Game(gameData);
+
 // for Dev
 window.game = game;
 window.shared = shared;
@@ -74,7 +77,9 @@ class Eltenia extends React.Component {
 				<Header saveHandler={this.save} loadHandler={this.load} resetHandler={this.reset}/>
 				<Navigation router={this.props.router}/>
 				<div style={styles.body}>
-					{this.props.children}
+					<Col xs={1}/>
+					<Col xs={10}>{this.props.children}</Col>
+					<Col x2={1}/>
 				</div>
 			</div>
 		);

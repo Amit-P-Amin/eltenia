@@ -1,5 +1,3 @@
-import isNumeric from '../../helpers/is-numeric'
-
 export default class BaseReader {
 	constructor(object) {
 		this.object = object;
@@ -22,7 +20,7 @@ export default class BaseReader {
 		// implement isNan checking
 	}
 	_clean(value) {
-		if (isNumeric(value)) {
+		if (helpers.isNumeric(value)) {
 			return _.round(value, 2);
 		} else {
 			return value

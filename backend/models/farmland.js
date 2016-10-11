@@ -1,7 +1,6 @@
 var gaussian = require('gaussian');
 import { shared }  from '../../shared/shared';
 import { config }  from '../config/config';
-import { helpers } from '../helpers/helpers';
 import Land        from './land';
 
 export default class Farmland {

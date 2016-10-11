@@ -46,8 +46,7 @@ Other
     Q: "Is there something else you want for your score? Has to be simple for me to implement."
 
 2. Person
-  a. Survival rate should be based on a combination of age and health  (or maybe that should be sickness vulnerability, which lowers health...?)
-  b. Survival rate should actually be used for a 'survive' roll made once every day or week
+  a. Make sure there are no duplicate names
 
 3. Birth
   a. A married couple should have a fertility rate, based on a combination of their age and health
@@ -59,3 +58,9 @@ Other
 5. Marriage
   a. Every 5 years, the marriage tab should open up
     i. The user will be given 1 year to manually arrange marriages; otherwise marriages will happen 'naturally'
+
+6. More complicated health model
+  a. Genes for effects of eating different foods, vulnerabilities, etc...
+  b. Status effects (e.g. injuries, illnesses) which have effects, but also are modified in turn by genes and health
+  c. Infection spread determined by health, age, genes, but also if others are infected
+

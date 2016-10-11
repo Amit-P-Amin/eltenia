@@ -5,6 +5,8 @@ class Navigation extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { activeKey: 1 };
+		console.log(this.props.location.pathname);
+		console.log(this.state.location.pathname);
 		this.handleSelect = this.handleSelect.bind(this);
 	}
 	handleSelect(eventKey) {
@@ -28,15 +30,9 @@ class Navigation extends React.Component {
 
 var styles = {
 	base: {
-		width: '400px',
-		margin: '0 auto'
-	},
-	menu: {
-		marginRight: '25px',
-		cursor: 'pointer',
-		":hover": {
-			color: '#000000'
-		}
+		width: '600px',
+		margin: '0 auto',
+		marginTop: '14px'
 	}
 };
 

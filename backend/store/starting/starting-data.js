@@ -15,3 +15,4 @@ let startingData = {
 Object.freeze(startingData);
 
 export { startingData }
+// module.exports = startingData;

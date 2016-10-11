@@ -1,5 +1,4 @@
 import BaseReader from './base-reader'
-import { helpers } from '../../helpers/helpers';
 
 export default class Profession extends BaseReader {
 	getParameters() {
