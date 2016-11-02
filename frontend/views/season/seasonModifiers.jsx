@@ -1,4 +1,4 @@
-class Season extends React.Component {
+class SeasonModifiers extends React.Component {
 	constructor(props) {
 		super(props);
 		this.selected  = this.selected.bind(this);
@@ -9,41 +9,49 @@ class Season extends React.Component {
 	render() {
 		return (
 			<div>
-				<BaseComponents.SmallHeader><u>Season Modifier</u></BaseComponents.SmallHeader>
-				<div>
-					<table>
-						<tbody>
-							<tr>
-								<td style={[styles.base, this.selected('Summer')]}><span>Summer - {this.props.summerModifier}</span></td>
-								<td style={[styles.base, this.selected('Fall')]}>  <span>Fall   - {this.props.fallModifier}  </span></td>
-								<td style={[styles.base, this.selected('Winter')]}><span>Winter - {this.props.winterModifier}</span></td>
-								<td style={[styles.base, this.selected('Spring')]}><span>Spring - {this.props.springModifier}</span></td>
-								</tr>
-						</tbody>
-					</table>
-				</div>
+				<BaseComponents.SmallHeader>Season Modifier</BaseComponents.SmallHeader>
+				<table style={[styles.table]}>
+					<tbody>
+						<tr>
+							<td style={[styles.td, styles.left, this.selected('Summer')]}>  <span>Summer - {this.props.modifiers['Summer']}</span></td>
+							<td style={[styles.td, styles.center, this.selected('Fall')]}>  <span>Fall   - {this.props.modifiers['Fall']}  </span></td>
+							<td style={[styles.td, styles.center, this.selected('Winter')]}><span>Winter - {this.props.modifiers['Winter']}</span></td>
+							<td style={[styles.td, styles.right, this.selected('Spring')]}> <span>Spring - {this.props.modifiers['Spring']}</span></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		);
 	}
 }
 
 var styles = {
-	base: {
+	table: {
+		width: '100%'
+	},
+	td: {
 		color      : '#D3D3D3',
 		fontWeight : 'thin',
-		fontSize   : '10px',
-		width      : '20%',
-		textAlign  : 'center'
+		fontSize   : '12px',
+		width      : '25%'
 	},
 	selected: {
 		color      : 'black',
 		fontWeight : 'bold',
-		fontSize   : '16px',
-		width      : '40%'
+		fontSize   : '14px'
+	},
+	left: {
+		'textAlign': 'left'
+	},
+	center: {
+		'textAlign': 'center'
+	},
+	right: {
+		'textAlign': 'right'
 	}
 };
 
-module.exports = Radium(Season);
+module.exports = Radium(SeasonModifiers);
 
 
 

@@ -64,3 +64,6 @@ Other
   b. Status effects (e.g. injuries, illnesses) which have effects, but also are modified in turn by genes and health
   c. Infection spread determined by health, age, genes, but also if others are infected
 
+Views
+--------------
+1. There should be a filterable, sortable table

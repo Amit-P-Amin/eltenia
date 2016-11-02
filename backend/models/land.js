@@ -5,7 +5,7 @@ export default class Land {
 		this.used      = params.used;
 	}
 	available() {
-		return this.parent.fallowRate * this.size;
+		return (1 - this.parent.fallowRate) * this.size;
 	}
 	fallowPercent() {
 		return this.used / this.size;

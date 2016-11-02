@@ -1,7 +1,7 @@
 import BaseReader       from './base-reader'
 import PersonReader     from './person'
 
-export default class PeopleReader extends BaseReader {
+export default class People extends BaseReader {
 	getParameters() {
 		return ({
 			people: _.map(this.object, (person, id) => {

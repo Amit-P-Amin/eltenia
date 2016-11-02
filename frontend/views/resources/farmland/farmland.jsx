@@ -1,5 +1,6 @@
-import SeasonModifiers from '../../season/seasonModifiers'
-import Col             from 'react-bootstrap/lib/Col';
+import SeasonModifiers  from '../../season/seasonModifiers';
+import WeatherModifiers from '../../weather/weatherModifiers';
+import Col              from 'react-bootstrap/lib/Col';
 
 export default class Farmland extends React.Component {
 	render() {
@@ -9,14 +10,15 @@ export default class Farmland extends React.Component {
 				<Col xs={6}>
 					<SeasonModifiers
 						current        = { this.props.season }
-						summerModifier = { this.props.seasonModifiers['Summer'] }
-						fallModifier   = { this.props.seasonModifiers['Fall'] }
-						winterModifier = { this.props.seasonModifiers['Winter'] }
-						springModifier = { this.props.seasonModifiers['Spring'] } />
+						modifiers      = { this.props.seasonModifiers} />
+					<WeatherModifiers
+						current        = { this.props.weather }
+						modifiers      = { this.props.weatherModifiers } />
+				</Col>
+				<Col xs={6}>
+					
 				</Col>
 			</div>
 		);
 	}
 }
-
-
