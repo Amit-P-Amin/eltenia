@@ -1,6 +1,7 @@
 import SeasonModifiers  from '../../season/seasonModifiers';
 import WeatherModifiers from '../../weather/weatherModifiers';
 import Col              from 'react-bootstrap/lib/Col';
+import Lands            from './lands/lands';
 
 export default class Farmland extends React.Component {
 	render() {
@@ -10,13 +11,13 @@ export default class Farmland extends React.Component {
 				<Col xs={6}>
 					<SeasonModifiers
 						current        = { this.props.season }
-						modifiers      = { this.props.seasonModifiers} />
+						modifiers      = { this.props.seasonModifiers}   />
 					<WeatherModifiers
 						current        = { this.props.weather }
 						modifiers      = { this.props.weatherModifiers } />
 				</Col>
 				<Col xs={6}>
-					
+					<Lands lands = { this.props.lands } quality = {} />
 				</Col>
 			</div>
 		);

@@ -71,7 +71,8 @@ export default class Farmland {
 
 	  _.map(config.farmland.BEST_TO_WORST_LAND, (quality) => {
 			let land   = this.lands[quality];
-	  	land.used  = Math.min(landNeeded, land.available());
+			let used   = Math.min(landNeeded, land.available());
+			land.updateUsed(used);
 			landNeeded = Math.max(landNeeded - land.used, 0);
 		}, 0);
 	}
